@@ -1,0 +1,49 @@
+{
+  "users": {
+    "test_smoke_457991151": {
+      "userId": "test_smoke_457991151",
+      "completedTopicIds": [],
+      "diagnosticAnswers": {
+        "q1": "I want to understand God and monotheism"
+      },
+      "startedAt": "2026-07-24T22:50:44.093Z"
+    },
+    "smoke_full_1056959924": {
+      "userId": "smoke_full_1056959924",
+      "completedTopicIds": [],
+      "diagnosticAnswers": {
+        "q1": "I want to understand God and monotheism",
+        "q2": "Yes, I've read significant portions",
+        "q3": "I already know how to pray",
+        "q4": "I've studied his life in depth",
+        "q5": "Understanding God and Islamic belief (Aqeedah)",
+        "q6": "Yes, I was raised in one and know it well"
+      },
+      "startedAt": "2026-07-24T22:50:55.046Z"
+    },
+    "smoke_complete_900792683": {
+      "userId": "smoke_complete_900792683",
+      "completedTopicIds": [
+        "tawhid-basics"
+      ],
+      "diagnosticAnswers": {},
+      "startedAt": "2026-07-24T22:51:05.945Z"
+    },
+    "user_1784933496597_4ls5p6": {
+      "userId": "user_1784933496597_4ls5p6",
+      "completedTopicIds": [
+        "tawhid-basics",
+        "six-articles-faith"
+      ],
+      "diagnosticAnswers": {
+        "q1": "I want to understand God and monotheism",
+        "q2": "Yes, I've read significant portions",
+        "q3": "I already know how to pray",
+        "q4": "I've studied his life in depth",
+        "q5": "Understanding God and Islamic belief (Aqeedah)",
+        "q6": "Yes, I was raised in one and know it well"
+      },
+      "startedAt": "2026-07-24T22:51:45.099Z"
+    }
+  }
+}

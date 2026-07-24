@@ -1,0 +1,535 @@
+[
+  {
+    "id": "tawhid-basics",
+    "title": "The Concept of God in Islam (Tawhid)",
+    "description": "The foundational belief in the absolute oneness of God. Tawhid is the first and most essential principle of Islamic faith — understanding who God is and why monotheism is central to everything else in Islam.",
+    "category": "Aqeedah",
+    "difficulty": 1,
+    "prerequisites": [],
+    "resource": {
+      "title": "Tawhid: The Concept of God in Islam",
+      "source": "Yaqeen Institute",
+      "url": "https://yaqeeninstitute.org/read/paper/tawhid-and-its-social-implications"
+    }
+  },
+  {
+    "id": "six-articles-faith",
+    "title": "The Six Articles of Faith",
+    "description": "Islam's core beliefs: God, Angels, Holy Books, Prophets, the Day of Judgment, and Divine Decree. These six pillars form the doctrinal backbone of Islamic belief.",
+    "category": "Aqeedah",
+    "difficulty": 1,
+    "prerequisites": ["tawhid-basics"],
+    "resource": {
+      "title": "The Six Pillars of Faith Explained",
+      "source": "IslamReligion.com",
+      "url": "https://www.islamreligion.com/articles/10252/six-pillars-of-faith/"
+    }
+  },
+  {
+    "id": "prophethood",
+    "title": "Understanding Prophethood (Nubuwwah)",
+    "description": "Why did God send prophets? Learn the Islamic understanding of prophethood — its necessity, characteristics of prophets, and the chain of messengers from Adam to Muhammad.",
+    "category": "Aqeedah",
+    "difficulty": 1,
+    "prerequisites": ["tawhid-basics"],
+    "resource": {
+      "title": "Prophethood in Islam",
+      "source": "SeekersGuidance",
+      "url": "https://seekersguidance.org/answers/islamic-belief/what-is-prophethood-and-why-is-it-necessary/"
+    }
+  },
+  {
+    "id": "quran-intro",
+    "title": "The Quran: Revelation & Structure",
+    "description": "How the Quran was revealed over 23 years, its structural organisation into surahs and ayahs, and how to approach reading it for the first time.",
+    "category": "Quran",
+    "difficulty": 1,
+    "prerequisites": [],
+    "resource": {
+      "title": "Introduction to the Quran",
+      "source": "Quran.com",
+      "url": "https://quran.com/info/introduction"
+    }
+  },
+  {
+    "id": "quran-preservation",
+    "title": "Preservation & Authenticity of the Quran",
+    "description": "The chain of oral and written transmission that preserved the Quran unchanged for 1,400 years — understanding why Muslims regard the Quran as the literal word of God.",
+    "category": "Quran",
+    "difficulty": 2,
+    "prerequisites": ["quran-intro", "prophethood"],
+    "resource": {
+      "title": "The Preservation of the Quran",
+      "source": "Yaqeen Institute",
+      "url": "https://yaqeeninstitute.org/read/paper/the-preservation-of-the-quran"
+    }
+  },
+  {
+    "id": "prophet-life-overview",
+    "title": "The Life of the Prophet Muhammad (Overview)",
+    "description": "A concise biography of the Prophet — his birth in Mecca, his character before revelation, the first revelation, and his significance in Islamic faith.",
+    "category": "Seerah",
+    "difficulty": 1,
+    "prerequisites": ["prophethood"],
+    "resource": {
+      "title": "The Sealed Nectar (Ar-Raheeq Al-Makhtum)",
+      "source": "Darussalam Publications",
+      "url": "https://www.kalamullah.com/Books/The%20Sealed%20Nectar.pdf"
+    }
+  },
+  {
+    "id": "meccan-period",
+    "title": "The Meccan Period: Early Islam",
+    "description": "The first 13 years of Islam in Mecca — the early converts, persecution, the Hijra to Abyssinia, and the years before migration to Madinah.",
+    "category": "Seerah",
+    "difficulty": 2,
+    "prerequisites": ["prophet-life-overview"],
+    "resource": {
+      "title": "When the Moon Split — Meccan Period",
+      "source": "International Islamic Publishing House",
+      "url": "https://www.kalamullah.com/Books/When%20The%20Moon%20Split.pdf"
+    }
+  },
+  {
+    "id": "madinan-period",
+    "title": "The Madinan Period: Building a Community",
+    "description": "The migration to Madinah, the Constitution of Madinah, early battles, and the establishment of the first Islamic state — how the Prophet built a just society.",
+    "category": "Seerah",
+    "difficulty": 2,
+    "prerequisites": ["meccan-period"],
+    "resource": {
+      "title": "The Prophet's Biography — Madinan Period",
+      "source": "Al-Islam.org",
+      "url": "https://www.al-islam.org/restatement-history-islam-and-muslims"
+    }
+  },
+  {
+    "id": "five-pillars",
+    "title": "The Five Pillars of Islam",
+    "description": "The five foundational acts of worship that structure a Muslim's life: Shahada (declaration of faith), Salah (prayer), Zakat (charity), Sawm (fasting), and Hajj (pilgrimage).",
+    "category": "Ibadah",
+    "difficulty": 1,
+    "prerequisites": ["tawhid-basics"],
+    "resource": {
+      "title": "The Five Pillars of Islam",
+      "source": "Yaqeen Institute",
+      "url": "https://yaqeeninstitute.org/read/paper/the-five-pillars-of-islam"
+    }
+  },
+  {
+    "id": "shahada",
+    "title": "The Shahada: Declaration of Faith",
+    "description": "The meaning of 'La ilaha illallah Muhammadur rasulullah' — what it requires of you, what it denies, and its transformation of a person's life and identity.",
+    "category": "Aqeedah",
+    "difficulty": 1,
+    "prerequisites": ["tawhid-basics", "prophethood"],
+    "resource": {
+      "title": "The Meaning of the Shahada",
+      "source": "SeekersGuidance",
+      "url": "https://seekersguidance.org/answers/islamic-belief/what-does-the-shahada-mean/"
+    }
+  },
+  {
+    "id": "salah-basics",
+    "title": "How to Pray (Salah) — Basics",
+    "description": "A step-by-step guide to performing the five daily prayers: ritual purity (wudu), the direction of prayer (qibla), postures (raka'at), and what to recite.",
+    "category": "Ibadah",
+    "difficulty": 1,
+    "prerequisites": ["five-pillars"],
+    "resource": {
+      "title": "How to Pray — Step-by-Step Guide",
+      "source": "IslamReligion.com",
+      "url": "https://www.islamreligion.com/articles/10107/how-to-pray/"
+    }
+  },
+  {
+    "id": "wudu-taharah",
+    "title": "Ritual Purity (Taharah & Wudu)",
+    "description": "The Islamic concept of purity — physical and ritual. Covers wudu (ablution), ghusl (full bath), and tayammum (dry purification). Required knowledge before performing salah.",
+    "category": "Fiqh",
+    "difficulty": 1,
+    "prerequisites": ["five-pillars"],
+    "resource": {
+      "title": "Purification in Islam",
+      "source": "IslamWeb.net",
+      "url": "https://www.islamweb.net/en/article/182048"
+    }
+  },
+  {
+    "id": "salah-khushu",
+    "title": "The Inner Dimension of Prayer (Khushu)",
+    "description": "Beyond the mechanics — how to achieve presence, focus, and humility in salah. The Prophet described prayer as the pillar of the religion and a conversation with God.",
+    "category": "Ibadah",
+    "difficulty": 2,
+    "prerequisites": ["salah-basics", "wudu-taharah"],
+    "resource": {
+      "title": "Humility in Prayer",
+      "source": "Ibn Qudama al-Maqdisi (Ibn Rajab summary)",
+      "url": "https://www.kalamullah.com/Books/Humility%20in%20Prayer.pdf"
+    }
+  },
+  {
+    "id": "zakat-basics",
+    "title": "Zakat: Obligatory Charity",
+    "description": "The third pillar — what Zakat is, who pays it, how it is calculated, who receives it, and its role in building economic justice and community solidarity.",
+    "category": "Ibadah",
+    "difficulty": 2,
+    "prerequisites": ["five-pillars", "shahada"],
+    "resource": {
+      "title": "Zakat: Rights and Obligations",
+      "source": "Zakat Foundation of America",
+      "url": "https://www.zakat.org/what-is-zakat"
+    }
+  },
+  {
+    "id": "sawm-ramadan",
+    "title": "Fasting & Ramadan (Sawm)",
+    "description": "The purpose and practice of fasting — from fajr to maghrib, the spiritual dimensions of Ramadan, Laylat al-Qadr, and how fasting cultivates taqwa (God-consciousness).",
+    "category": "Ibadah",
+    "difficulty": 2,
+    "prerequisites": ["five-pillars", "salah-basics"],
+    "resource": {
+      "title": "Ramadan: A Month of Spiritual Training",
+      "source": "IslamOnline.net",
+      "url": "https://islamonline.net/en/ramadan-month-of-spiritual-training"
+    }
+  },
+  {
+    "id": "hajj-overview",
+    "title": "Hajj: The Pilgrimage to Mecca",
+    "description": "The fifth pillar — the annual pilgrimage, its rituals (Tawaf, Sa'i, Arafat, Mina), its spiritual significance, and its connection to the Prophet Ibrahim.",
+    "category": "Ibadah",
+    "difficulty": 2,
+    "prerequisites": ["five-pillars", "prophet-life-overview"],
+    "resource": {
+      "title": "Hajj: A Practical Guide",
+      "source": "Saudi Ministry of Hajj & Umrah",
+      "url": "https://www.haj.gov.sa/en/pages/hajj-guide"
+    }
+  },
+  {
+    "id": "sunnah-hadith",
+    "title": "Understanding the Sunnah & Hadith",
+    "description": "What the Sunnah is, how hadith were collected and authenticated, and why the Prophet's example (sunnah) is the second primary source of Islamic law alongside the Quran.",
+    "category": "Aqeedah",
+    "difficulty": 2,
+    "prerequisites": ["prophethood", "quran-intro"],
+    "resource": {
+      "title": "The Authority of the Sunnah",
+      "source": "IslamWeb.net",
+      "url": "https://www.islamweb.net/en/article/178484"
+    }
+  },
+  {
+    "id": "islamic-law-intro",
+    "title": "Introduction to Islamic Law (Shariah & Fiqh)",
+    "description": "The difference between Shariah (divine law) and Fiqh (human legal interpretation). The four major Sunni schools of law and how Muslims navigate legal questions.",
+    "category": "Fiqh",
+    "difficulty": 2,
+    "prerequisites": ["sunnah-hadith", "quran-preservation"],
+    "resource": {
+      "title": "Introduction to Islamic Jurisprudence",
+      "source": "SeekersGuidance",
+      "url": "https://seekersguidance.org/courses/principles-islamic-jurisprudence-fiqh"
+    }
+  },
+  {
+    "id": "halal-haram",
+    "title": "Halal & Haram: Lawful and Unlawful",
+    "description": "The Islamic framework for permissibility — covering food, finance, relationships, and conduct. How scholars derive rulings, and why the categories exist.",
+    "category": "Fiqh",
+    "difficulty": 2,
+    "prerequisites": ["islamic-law-intro"],
+    "resource": {
+      "title": "The Lawful and Prohibited in Islam",
+      "source": "Yusuf al-Qaradawi — Islamic Book Trust",
+      "url": "https://www.kalamullah.com/Books/The%20Lawful%20And%20The%20Prohibited%20In%20Islam.pdf"
+    }
+  },
+  {
+    "id": "iman-ihsan",
+    "title": "Iman, Islam & Ihsan: Three Levels of Deen",
+    "description": "The famous hadith of Jibreel explains the three dimensions of the religion: Islam (submission), Iman (belief), and Ihsan (excellence / worshipping as if you see God). A framework for the entire spiritual path.",
+    "category": "Aqeedah",
+    "difficulty": 2,
+    "prerequisites": ["six-articles-faith", "five-pillars"],
+    "resource": {
+      "title": "Hadith of Jibreel: Islam, Iman, Ihsan",
+      "source": "Yaqeen Institute",
+      "url": "https://yaqeeninstitute.org/read/paper/ihsan-the-third-dimension-of-the-deen"
+    }
+  },
+  {
+    "id": "arabic-script",
+    "title": "Reading Arabic Script (Letters & Sounds)",
+    "description": "An introduction to the 28 Arabic letters, their forms, basic pronunciation, and how to connect them. A foundational step toward reading the Quran in its original language.",
+    "category": "Quran",
+    "difficulty": 1,
+    "prerequisites": ["quran-intro"],
+    "resource": {
+      "title": "Arabic Alphabet for Beginners",
+      "source": "ArabicPod101",
+      "url": "https://www.arabicpod101.com/learn/arabic-alphabet/"
+    }
+  },
+  {
+    "id": "tajweed-basics",
+    "title": "Tajweed: Rules of Quranic Recitation",
+    "description": "The science of reciting the Quran with correct pronunciation, elongation (madd), and articulation points. Tajweed honors the Quran as it was revealed through the Prophet.",
+    "category": "Quran",
+    "difficulty": 2,
+    "prerequisites": ["arabic-script"],
+    "resource": {
+      "title": "Tajweed Rules Made Easy",
+      "source": "TajweedQuran.net",
+      "url": "https://www.quranflash.com/en/tajweed.html"
+    }
+  },
+  {
+    "id": "quran-thematic-study",
+    "title": "Thematic Study: Quran on God, Humanity & Purpose",
+    "description": "A thematic reading of key Quranic chapters — Surah Al-Fatiha, Al-Baqarah opening, Surah Al-Ikhlas, and Surah Al-Mulk — exploring the Quran's core messages about existence and meaning.",
+    "category": "Quran",
+    "difficulty": 2,
+    "prerequisites": ["quran-intro", "tawhid-basics"],
+    "resource": {
+      "title": "Themes of the Quran",
+      "source": "Bayyinah Institute (Nouman Ali Khan)",
+      "url": "https://www.youtube.com/playlist?list=PLb0VqBKg7MLPRhJOCWU15r5IlLJ0C7P5_"
+    }
+  },
+  {
+    "id": "dhikr-dua",
+    "title": "Remembrance of God (Dhikr) & Supplication (Dua)",
+    "description": "The Prophetic practice of dhikr (remembrance) and dua (supplication) — morning and evening adhkar, the etiquette of dua, and how regular remembrance strengthens the heart.",
+    "category": "Ibadah",
+    "difficulty": 1,
+    "prerequisites": ["salah-basics"],
+    "resource": {
+      "title": "Fortress of the Muslim (Hisnul Muslim)",
+      "source": "Said bin Wahf al-Qahtani",
+      "url": "https://www.kalamullah.com/Books/Fortress%20of%20the%20Muslim.pdf"
+    }
+  },
+  {
+    "id": "angels-unseen",
+    "title": "Angels & the Unseen World (Al-Ghayb)",
+    "description": "The Islamic worldview of the unseen — angels (their nature, roles, and names), jinn, and the Day of Judgment. Faith in the unseen (iman bil-ghayb) is a distinguishing feature of Islamic belief.",
+    "category": "Aqeedah",
+    "difficulty": 2,
+    "prerequisites": ["six-articles-faith"],
+    "resource": {
+      "title": "The World of the Angels",
+      "source": "Sheikh Abd al-Hamid Kishk",
+      "url": "https://www.kalamullah.com/Books/World%20Of%20The%20Angels.pdf"
+    }
+  },
+  {
+    "id": "akhirah-afterlife",
+    "title": "Death, the Grave & the Afterlife (Akhirah)",
+    "description": "The Islamic understanding of what happens after death — the barzakh (intermediate state), the resurrection, judgment, and the Quranic descriptions of Jannah (paradise) and Jahannam.",
+    "category": "Aqeedah",
+    "difficulty": 2,
+    "prerequisites": ["six-articles-faith"],
+    "resource": {
+      "title": "The Hereafter in Islam",
+      "source": "Yaqeen Institute",
+      "url": "https://yaqeeninstitute.org/read/paper/reflections-on-the-hereafter"
+    }
+  },
+  {
+    "id": "qadr-divine-decree",
+    "title": "Divine Decree (Qadr) & Free Will",
+    "description": "The sixth article of faith — how Islam reconciles God's complete knowledge and decree with human free will and moral responsibility. A topic many new Muslims find difficult and important.",
+    "category": "Aqeedah",
+    "difficulty": 3,
+    "prerequisites": ["six-articles-faith", "iman-ihsan"],
+    "resource": {
+      "title": "Divine Decree: A Muslim's Perspective",
+      "source": "SeekersGuidance",
+      "url": "https://seekersguidance.org/answers/islamic-belief/belief-in-divine-decree-qadar/"
+    }
+  },
+  {
+    "id": "akhlaq-character",
+    "title": "Islamic Character & Ethics (Akhlaq)",
+    "description": "The Prophet said 'I was sent to perfect good character.' This module covers the Quranic and Prophetic emphasis on character — honesty, compassion, patience, and the ethics of daily Muslim life.",
+    "category": "Akhlaq",
+    "difficulty": 1,
+    "prerequisites": ["shahada"],
+    "resource": {
+      "title": "Purification of the Soul",
+      "source": "Jamal ad-Din Zarabozo",
+      "url": "https://www.kalamullah.com/Books/Purification%20of%20the%20Soul.pdf"
+    }
+  },
+  {
+    "id": "sabr-shukr",
+    "title": "Patience (Sabr) & Gratitude (Shukr)",
+    "description": "Two of the most praised spiritual qualities in the Quran — the art of patient endurance in hardship and sincere gratitude in blessings. Practical tools for the new Muslim navigating a changed life.",
+    "category": "Akhlaq",
+    "difficulty": 2,
+    "prerequisites": ["akhlaq-character", "iman-ihsan"],
+    "resource": {
+      "title": "Patience and Gratitude",
+      "source": "Ibn al-Qayyim (abridged translation)",
+      "url": "https://www.kalamullah.com/Books/Patience%20and%20Gratitude.pdf"
+    }
+  },
+  {
+    "id": "dealing-with-doubt",
+    "title": "Dealing with Doubts & Building Certainty (Yaqeen)",
+    "description": "Practical and spiritual guidance for new Muslims navigating intellectual doubts, wavering faith, and external challenges. How certainty (yaqeen) grows through knowledge, worship, and community.",
+    "category": "Aqeedah",
+    "difficulty": 2,
+    "prerequisites": ["tawhid-basics", "akhlaq-character"],
+    "resource": {
+      "title": "Fortifying Faith in Times of Doubt",
+      "source": "SeekersGuidance",
+      "url": "https://seekersguidance.org/answers/islamic-belief/how-to-deal-with-doubts-in-faith/"
+    }
+  },
+  {
+    "id": "muslim-community",
+    "title": "The Muslim Ummah & Finding Community",
+    "description": "The concept of the global Muslim community (ummah), the role of the mosque (masjid), and practical guidance for new Muslims on connecting with local communities, Islamic centers, and support networks.",
+    "category": "Akhlaq",
+    "difficulty": 1,
+    "prerequisites": ["shahada"],
+    "resource": {
+      "title": "New Muslim Support & Community",
+      "source": "WhyIslam.org",
+      "url": "https://www.whyislam.org/new-muslims/"
+    }
+  },
+  {
+    "id": "salah-times-adhan",
+    "title": "The Five Prayer Times & the Call to Prayer",
+    "description": "Understanding the five prayer windows (Fajr, Dhuhr, Asr, Maghrib, Isha), how they are determined, the adhan (call to prayer) and its response, and integrating prayer times into daily life.",
+    "category": "Fiqh",
+    "difficulty": 1,
+    "prerequisites": ["salah-basics"],
+    "resource": {
+      "title": "Prayer Times and the Adhan",
+      "source": "IslamReligion.com",
+      "url": "https://www.islamreligion.com/articles/10116/prayer-times-adhan/"
+    }
+  },
+  {
+    "id": "friday-prayer",
+    "title": "Jumu'ah: The Friday Prayer",
+    "description": "The significance of Friday in Islam, the obligation of Jumu'ah prayer for men, the khutbah (sermon), and the virtues of Friday as the 'master of days.' An important weekly community anchor.",
+    "category": "Fiqh",
+    "difficulty": 2,
+    "prerequisites": ["salah-times-adhan", "wudu-taharah"],
+    "resource": {
+      "title": "The Friday Prayer in Islam",
+      "source": "IslamWeb.net",
+      "url": "https://www.islamweb.net/en/article/131989"
+    }
+  },
+  {
+    "id": "islamic-calendar",
+    "title": "The Islamic (Hijri) Calendar & Key Dates",
+    "description": "The lunar Islamic calendar — how it works, why it starts from the Hijra, and the significance of key months: Ramadan, Dhul-Hijja, Muharram. Gives cultural orientation to the Muslim year.",
+    "category": "Seerah",
+    "difficulty": 1,
+    "prerequisites": ["prophet-life-overview"],
+    "resource": {
+      "title": "The Islamic Calendar",
+      "source": "IslamicFinder",
+      "url": "https://www.islamicfinder.org/islamic-date-converter/"
+    }
+  },
+  {
+    "id": "seerah-companions",
+    "title": "The Companions of the Prophet (Sahabah)",
+    "description": "Who the sahabah were, their relationship with the Prophet, key figures (Abu Bakr, Umar, Uthman, Ali, Khadijah, Aisha), and why their lives are models for Muslims.",
+    "category": "Seerah",
+    "difficulty": 2,
+    "prerequisites": ["madinan-period"],
+    "resource": {
+      "title": "Men and Women Around the Messenger",
+      "source": "Khalid Muhammad Khalid — Dar al-Salam",
+      "url": "https://www.kalamullah.com/men-and-women-around-the-messenger.html"
+    }
+  },
+  {
+    "id": "islamic-history-overview",
+    "title": "Islamic Civilisation: A Brief Overview",
+    "description": "From the early caliphates to the golden age of Islamic scholarship in Baghdad, Cordoba, and Cairo — how the early Muslim community built one of history's great civilisations.",
+    "category": "Seerah",
+    "difficulty": 3,
+    "prerequisites": ["seerah-companions", "madinan-period"],
+    "resource": {
+      "title": "Lost Islamic History",
+      "source": "Firas Alkhateeb",
+      "url": "https://lostislamichistory.com/"
+    }
+  },
+  {
+    "id": "tawbah-repentance",
+    "title": "Repentance (Tawbah) & God's Mercy",
+    "description": "The Islamic theology of repentance — God's infinite mercy, the conditions for valid tawbah, and how the door of repentance is always open. Critical for new Muslims overcoming guilt from the past.",
+    "category": "Aqeedah",
+    "difficulty": 2,
+    "prerequisites": ["tawhid-basics", "akhlaq-character"],
+    "resource": {
+      "title": "The Concept of Repentance in Islam",
+      "source": "Yaqeen Institute",
+      "url": "https://yaqeeninstitute.org/read/paper/allah-loves-the-penitent"
+    }
+  },
+  {
+    "id": "ihsan-spiritual-excellence",
+    "title": "Spiritual Excellence & Ihsan in Daily Life",
+    "description": "Translating the concept of Ihsan (doing what is beautiful / worshipping as if you see God) into daily practice — in worship, dealings, speech, and relationships.",
+    "category": "Akhlaq",
+    "difficulty": 3,
+    "prerequisites": ["iman-ihsan", "sabr-shukr", "salah-khushu"],
+    "resource": {
+      "title": "The Inner Dimensions of Islamic Worship",
+      "source": "Al-Ghazali (abridged by Al-Qaradawi)",
+      "url": "https://www.kalamullah.com/Books/Inner%20Dimensions%20of%20Islamic%20Worship.pdf"
+    }
+  },
+  {
+    "id": "quran-tafsir-intro",
+    "title": "Introduction to Quranic Tafsir (Exegesis)",
+    "description": "What tafsir is and why it matters — how scholars interpret the Quran, the different tafsir methodologies (classical, thematic, scientific), and recommended tafsir resources for English speakers.",
+    "category": "Quran",
+    "difficulty": 3,
+    "prerequisites": ["quran-thematic-study", "sunnah-hadith"],
+    "resource": {
+      "title": "How to Study Tafsir",
+      "source": "SeekersGuidance",
+      "url": "https://seekersguidance.org/articles/knowledge/how-to-study-the-quran-and-tafsir/"
+    }
+  },
+  {
+    "id": "fiqh-worship-deep",
+    "title": "Advanced Fiqh of Worship",
+    "description": "A deeper look at the fiqh rulings governing salah, zakat, fasting, and hajj — including missed prayers, prayer while travelling, and common questions new Muslims face.",
+    "category": "Fiqh",
+    "difficulty": 3,
+    "prerequisites": ["islamic-law-intro", "salah-khushu", "sawm-ramadan"],
+    "resource": {
+      "title": "Reliance of the Traveller",
+      "source": "Nuh Ha Mim Keller (Amana Publications)",
+      "url": "https://www.youtube.com/playlist?list=PLb0VqBKg7MLQKwZy-J4CxzTqQbqDWlbGc"
+    }
+  },
+  {
+    "id": "navigating-identity",
+    "title": "Muslim Identity as a Revert: Navigating Change",
+    "description": "A pastoral and practical guide specifically for reverts — navigating family reactions, cultural adjustments, name changes, halal lifestyle challenges, and building an authentic Muslim identity.",
+    "category": "Akhlaq",
+    "difficulty": 2,
+    "prerequisites": ["muslim-community", "dealing-with-doubt"],
+    "resource": {
+      "title": "New Muslim Guide",
+      "source": "Al-Jumuah Magazine",
+      "url": "https://aljumuah.com/new-muslim-guide/"
+    }
+  }
+]
