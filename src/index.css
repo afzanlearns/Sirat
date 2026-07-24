@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0A1F1A;
+  --surface: #122B24;
+  --primary: #0B6E5A;
+  --secondary: #D5B38E;
+  --muted: #3D4A45;
+  --border: #1E332C;
+  --text-primary: #F2EDE6;
+  --text-muted: #8B9B94;
+
+  --font-mono: "Geist Mono", "Consolas", monospace;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: var(--font-mono);
+  background: var(--bg);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+button {
+  font-family: var(--font-mono);
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+}
+
+button:focus-visible {
+  outline: 1px solid var(--primary);
+  outline-offset: 2px;
+}
