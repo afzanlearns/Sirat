@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import ReactMarkdown from "react-markdown";
 import { API_BASE as API } from "../lib/api";
 
 interface AskResponse {
@@ -21,35 +22,36 @@ const EXAMPLES = [
   "Is seeking knowledge encouraged in Islam?",
 ];
 
-const URL_RE = /(https?:\/\/[^\s)]+)/g;
-
-/** Render answer text: preserve paragraphs, linkify URLs. */
+/** Render the answer as Markdown, styled to the app theme. */
 function AnswerBody({ text }: { text: string }) {
-  const paras = text.split(/\n{2,}/).filter((p) => p.trim());
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-      {paras.map((p, i) => {
-        const parts = p.split(URL_RE);
-        return (
-          <p key={i} style={{ fontSize: "1rem", lineHeight: 1.7, color: "var(--text-primary)" }}>
-            {parts.map((part, j) =>
-              URL_RE.test(part) ? (
-                <a
-                  key={j}
-                  href={part}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: "var(--accent)", textDecorationColor: "var(--accent-soft)", wordBreak: "break-word" }}
-                >
-                  {part.replace(/^https?:\/\//, "")}
-                </a>
-              ) : (
-                <span key={j}>{part}</span>
-              )
-            )}
-          </p>
-        );
-      })}
+    <div style={{ display: "flex", flexDirection: "column", gap: "12px", fontSize: "1rem", lineHeight: 1.7, color: "var(--text-primary)" }}>
+      <ReactMarkdown
+        components={{
+          p: ({ children }) => <p style={{ margin: 0, lineHeight: 1.7 }}>{children}</p>,
+          strong: ({ children }) => <strong style={{ fontWeight: 600, color: "var(--text-primary)" }}>{children}</strong>,
+          em: ({ children }) => <em style={{ fontStyle: "italic" }}>{children}</em>,
+          h1: ({ children }) => <h3 className="serif" style={{ fontSize: "1.2rem", margin: "8px 0 2px" }}>{children}</h3>,
+          h2: ({ children }) => (
+            <h3 className="label" style={{ color: "var(--accent)", margin: "10px 0 2px" }}>{children}</h3>
+          ),
+          h3: ({ children }) => (
+            <h4 className="label" style={{ color: "var(--accent)", margin: "8px 0 2px" }}>{children}</h4>
+          ),
+          ul: ({ children }) => <ul style={{ margin: 0, paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "6px" }}>{children}</ul>,
+          ol: ({ children }) => <ol style={{ margin: 0, paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "6px" }}>{children}</ol>,
+          li: ({ children }) => <li style={{ lineHeight: 1.6 }}>{children}</li>,
+          a: ({ href, children }) => (
+            <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", wordBreak: "break-word" }}>
+              {children}
+            </a>
+          ),
+          hr: () => <div style={{ height: "1px", background: "var(--border)", margin: "6px 0" }} />,
+          code: ({ children }) => <code className="mono" style={{ fontSize: "0.85em", background: "var(--surface-2)", padding: "1px 5px", borderRadius: "var(--r-sm)" }}>{children}</code>,
+        }}
+      >
+        {text}
+      </ReactMarkdown>
     </div>
   );
 }
