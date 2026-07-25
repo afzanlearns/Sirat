@@ -44,13 +44,16 @@ class Settings:
         # NOTE: upstream hardcoded a leaked Gemini key here — removed for safety.
         self.gemini_api_key = os.environ.get("GEMINI_API_KEY", "")
         self.groq_api_key = os.environ.get("GROQ_API_KEY", "")
-        self.groq_model = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+        # 8b-instant has a much higher free-tier daily token limit than 70b, so
+        # the Ask section stays available. Override with GROQ_MODEL if desired.
+        self.groq_model = os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
 
         # Embedding model
         self.embedding_model = "all-MiniLM-L6-v2";
 
         # Default parameters
-        self.default_top_k = 10
+        # Fewer chunks per query → smaller prompts → far fewer tokens/day used.
+        self.default_top_k = 7
         self.default_relevance_threshold = 0.6
 
         # CORS settings - Frontend ke liye
@@ -454,9 +457,17 @@ async def process_islamic_query(query: str, source_type: str = "auto", top_k: in
         if used_alternatives:
             raw_results = best_results
 
-    # Separate results by source for presentation
-    quran_texts = [r["text"] for r in raw_results if r.get("source") == "quran"]
-    hadith_texts = [r["text"] for r in raw_results if r.get("source") == "hadith"]
+    # Separate results by source. Clip each chunk so a single long hadith can't
+    # blow up the prompt (keeps tokens/query low). This only shortens what the LLM
+    # sees for this query — the stored index/data is untouched.
+    def _clip(text, limit=550):
+        t = (text or "").strip()
+        if len(t) <= limit:
+            return t
+        return t[:limit].rsplit(" ", 1)[0] + "…"
+
+    quran_texts = [_clip(r["text"]) for r in raw_results if r.get("source") == "quran"]
+    hadith_texts = [_clip(r["text"]) for r in raw_results if r.get("source") == "hadith"]
 
     # Build context based on what we found
     context = ""
@@ -465,41 +476,49 @@ async def process_islamic_query(query: str, source_type: str = "auto", top_k: in
     if hadith_texts:
         context += "HADITH REFERENCES:\n" + "\n\n".join(hadith_texts)
 
-    # Generate response using the configured LLM, or fall back to raw context
+    # Shown when the LLM is unavailable (e.g. the daily token limit is reached).
+    # We deliberately do NOT dump raw context — it reads as noise.
+    UNAVAILABLE = (
+        "The knowledge assistant is temporarily unavailable — the daily AI limit may "
+        "have been reached. Please try again in a little while. For anything urgent, "
+        "please consult a trusted local scholar or a reliable source such as "
+        "quran.com or sunnah.com."
+    )
+
+    generated = False
     if llm_ready():
-        prompt = f"""
-        You are a knowledgeable Islamic assistant. Answer the following question based on the provided Islamic sources.
-        
-        Always include proper references in your answer:
-        - For Quran: "Surah [Name], Ayah [Number]"
-        - For Hadith: "[Book Name], Hadith [Number]"
-        
-        Islamic Context:
-        {context}
-        
-        Question: {query}
-        
-        Answer:
-        """
-        
+        prompt = f"""You are a knowledgeable, humble Islamic assistant. Answer the question using ONLY the provided sources.
+
+Guidelines:
+- Be concise: 2–4 short paragraphs.
+- Cite ONLY the references directly relevant to the question, as "Surah [Name], Ayah [Number]" or "[Collection], Hadith [Number]". Ignore sources that are not relevant.
+- If the provided sources do not really address the question, say so briefly rather than forcing a connection.
+- Do not issue rulings; where a personal ruling is needed, advise asking a qualified scholar.
+
+Islamic sources:
+{context}
+
+Question: {query}
+
+Answer:"""
         try:
             response = llm_generate(prompt)
+            generated = True
         except Exception as e:
             logger.error(f"Error generating response: {e}")
-            response = f"Based on Islamic sources, here's what I found regarding your question about '{query}':\n\n{context}"
+            response = UNAVAILABLE
     else:
-        # Fallback response when Gemini is not available
-        response = f"Based on Islamic sources, here's what I found regarding your question about '{query}':\n\n{context}"
+        response = UNAVAILABLE
 
-    # Include alternative note if alternatives were used
-    if used_alternatives:
+    # Only annotate a real answer.
+    if generated and used_alternatives:
         response = f"Note: I searched for related concepts: {', '.join(used_alternatives)}.\n\n{response}"
 
     end_time = time.time()
     processing_time = end_time - start_time
 
-    # Count references in the response
-    references_count = response.count("Surah") + response.count("Hadith")
+    # Count references only in a real answer.
+    references_count = (response.count("Surah") + response.count("Hadith")) if generated else 0
 
     return {
         "query": query,
