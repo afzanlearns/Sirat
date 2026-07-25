@@ -1,0 +1,8 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#0A1F1A"/>
+  <!-- Maskable: content kept within the central 80% safe zone -->
+  <rect x="253" y="168" width="6" height="176" fill="#1E332C"/>
+  <rect x="238" y="320" width="36" height="36" fill="#D5B38E"/>
+  <rect x="238" y="238" width="36" height="36" fill="#0B6E5A"/>
+  <rect x="239" y="158" width="34" height="34" fill="none" stroke="#3D4A45" stroke-width="4"/>
+</svg>

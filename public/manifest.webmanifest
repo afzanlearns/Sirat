@@ -1,0 +1,16 @@
+{
+  "name": "Sirat — Learning Companion",
+  "short_name": "Sirat",
+  "description": "A calm, guided learning companion for new Muslims. Works offline.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0A1F1A",
+  "theme_color": "#0A1F1A",
+  "categories": ["education", "lifestyle"],
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

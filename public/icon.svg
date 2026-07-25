@@ -1,0 +1,11 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#0A1F1A"/>
+  <!-- The straight path: a vertical spine with ascending nodes -->
+  <rect x="253" y="128" width="6" height="256" fill="#1E332C"/>
+  <!-- completed node (bottom) -->
+  <rect x="232" y="352" width="48" height="48" fill="#D5B38E"/>
+  <!-- ready node (middle) -->
+  <rect x="232" y="232" width="48" height="48" fill="#0B6E5A"/>
+  <!-- locked node (top) -->
+  <rect x="234" y="114" width="44" height="44" fill="none" stroke="#3D4A45" stroke-width="4"/>
+</svg>
