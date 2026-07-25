@@ -1,300 +1,268 @@
-# Sirat — Revert Learning Roadmap
+# Sirat — a calm learning companion for new Muslims
 
-A guided learning companion for new Muslims. Sirat asks you six diagnostic questions, then builds a personalised learning roadmap computed from a real directed acyclic graph (DAG) of topics. As you complete topics, the roadmap updates live, unlocking exactly the topics your completed prerequisites make available.
+> **Sirat** (صِرَاط) — Arabic for "the path." Sirat helps reverts and beginners walk
+> their first steps in Islam: a personalised learning **Path**, an **Ask** section that
+> answers from the Qur'an and authentic Hadith (RAG), live **Prayer** times, a
+> **People** (community/masjid) bridge, and a private **You** profile. It's an
+> installable PWA and works offline.
 
-> **Sirat** (صِرَاط) — Arabic for "path" or "way." The opening chapter of the Quran asks God for guidance to *the straight path*.
+Built for the **Algorism Build Hackathon — Community (Ummah) track**.
 
 ---
 
-## Quick Start
+## The three services
 
-You need two terminals — one for the API server, one for the frontend.
+Sirat runs as **three local processes**. You need all three for the full app.
+
+| # | Service | Folder | Port | What it does |
+|---|---------|--------|------|--------------|
+| 1 | **API** (Node/Express) | `server/` | `3001` | Roadmap/DAG, diagnostic, prayer proxy, masjid, and the `/api/ask` proxy |
+| 2 | **RAG** (Python/FastAPI) | `rag/` | `8000` | HidayahAI retrieval over Qur'an + Hadith; powers the **Ask** section |
+| 3 | **Frontend** (React/Vite) | `.` (root) | `5173` | The PWA the user sees |
+
+---
+
+## Prerequisites
+
+- **Node.js 18+** and npm
+- **Python 3.10+** (3.12 tested)
+- A **free Groq API key** → https://console.groq.com — **required** (used for the Ask
+  answers *and* the onboarding diagnostic). Without it the app still runs, but Ask
+  returns only raw sources and the diagnostic seeds nothing.
+- *(optional)* A **Supabase** project — enables real-time community + cross-device
+  progress. Without it, everything falls back to local JSON files (zero-config).
+- *(optional)* A **Gemini API key** — an alternative generation model for Ask. Not
+  needed; Groq is the default.
+
+---
+
+## Step-by-step setup
+
+Clone, then set up each service. **Do this once per machine.**
 
 ```bash
-# Terminal 1 — API (port 3001)
+git clone <your-repo-url> Sirat
+cd Sirat
+```
+
+### 1) API server (`server/`, port 3001)
+
+```bash
 cd server
 npm install
-npm run dev
-
-# Terminal 2 — Frontend (port 5173)
-cd ..          # back to Sirat root
-npm install
-npm run dev
+cp .env.example .env        # then edit .env — see “Environment” below
+npm run dev                 # → http://localhost:3001   (tsx watch, auto-reloads)
 ```
 
-Then open **http://localhost:5173** in your browser.
+Minimum `server/.env`:
+```bash
+GROQ_API_KEY=gsk_your_groq_key_here
+PORT=3001
+RAG_URL=http://localhost:8000
+# Supabase is optional — leave blank to use the local JSON store:
+# SUPABASE_URL=https://<ref>.supabase.co
+# SUPABASE_ANON_KEY=sb_publishable_xxx
+```
 
-### Optional: Enable Groq AI diagnostic mapping
+### 2) RAG service (`rag/`, port 8000) — Python venv
+
+This is the **Ask** brain: it searches the authentic Qur'an + Hadith FAISS indices and
+has Groq compose a cited answer. First run downloads a ~90 MB embedding model.
+
+**macOS / Linux:**
+```bash
+cd rag
+python3 -m venv venv
+./venv/bin/pip install --upgrade pip
+
+# Install CPU-only PyTorch FIRST — this avoids a ~2.5 GB CUDA download:
+./venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+# Then the rest of the RAG dependencies:
+./venv/bin/pip install -r requirements.txt
+
+# Run it (retrieval is local; generation uses your Groq key):
+GROQ_API_KEY=gsk_your_groq_key_here ./venv/bin/uvicorn rag_api:app --host 0.0.0.0 --port 8000
+```
+
+**Windows (PowerShell):**
+```powershell
+cd rag
+python -m venv venv
+venv\Scripts\python -m pip install --upgrade pip
+venv\Scripts\pip install torch --index-url https://download.pytorch.org/whl/cpu
+venv\Scripts\pip install -r requirements.txt
+$env:GROQ_API_KEY="gsk_your_groq_key_here"
+venv\Scripts\uvicorn rag_api:app --host 0.0.0.0 --port 8000
+```
+
+**Wait for it to finish loading** — the first start downloads the model and loads the
+indices. It's ready when the log prints `API initialized successfully`, or when:
+```bash
+curl http://localhost:8000/health
+# {"status":"healthy","indices_loaded":true,"embedding_model_loaded":true}
+```
+
+> To use **Gemini** instead of Groq, set `GEMINI_API_KEY=...` and leave `GROQ_API_KEY`
+> unset — Groq takes priority whenever both are present. No code change needed.
+
+### 3) Frontend (root, port 5173)
 
 ```bash
-cp server/.env.example server/.env
-# Edit server/.env and set GROQ_API_KEY=your_key_here
+cd ..            # back to the Sirat root
+npm install
+cp .env.example .env        # edit if you use Supabase; defaults work otherwise
+npm run dev                 # → http://localhost:5173
 ```
 
-Without a key, the app is fully functional — users simply start with all prerequisite-free topics unlocked rather than having their prior knowledge pre-seeded by the AI.
+Root `.env`:
+```bash
+VITE_API_BASE=http://localhost:3001/api
+# Supabase (optional — must match server/.env):
+# VITE_SUPABASE_URL=https://<ref>.supabase.co
+# VITE_SUPABASE_ANON_KEY=sb_publishable_xxx
+```
+
+> **PWA / offline:** the service worker only registers in a production build. To test
+> installability and offline, run `npm run build && npm run preview` instead of `npm run dev`.
+
+### Running order (each in its own terminal)
+
+Start **RAG first** (it takes longest to warm up), then the API, then the frontend:
+
+```
+Terminal 1:  cd rag    && GROQ_API_KEY=... ./venv/bin/uvicorn rag_api:app --port 8000
+Terminal 2:  cd server && npm run dev
+Terminal 3:  (root)      npm run dev
+```
+
+Open **http://localhost:5173**.
 
 ---
 
-## What the App Does
+## Environment variables (reference)
 
-1. **Onboarding** — A quiet landing screen. One button: BEGIN.
-2. **Diagnostic** — Six questions, one at a time, about the user's background and interests.
-3. **Groq mapping** *(optional)* — After the diagnostic, Llama 3.3-70B maps the user's answers to a set of "already known" topic IDs from the topic list. These are pre-marked as completed so experienced users don't have to backfill basics.
-4. **Roadmap** — A vertical scrolling path of 41 topic nodes. Each node is `locked`, `unlocked` (ready), or `completed`. The state is computed from a DAG — not a static order.
-5. **Topic Detail** — Full description, category, difficulty, and a link to a real external resource.
-6. **Mark Complete** — Clicking this marks the topic done, re-runs the frontier algorithm, and returns a `newlyUnlocked` diff that drives the animation on exactly the right nodes.
+**`server/.env`**
+| Var | Required | Purpose |
+|-----|----------|---------|
+| `GROQ_API_KEY` | yes | Diagnostic mapping + Ask generation |
+| `PORT` | no (3001) | API port |
+| `RAG_URL` | no | RAG service URL (default `http://localhost:8000`) |
+| `SUPABASE_URL` / `SUPABASE_ANON_KEY` | no | Persist progress to Postgres (publishable key only) |
+
+**root `.env`** (Vite — bundled into the client, safe to expose)
+| Var | Purpose |
+|-----|---------|
+| `VITE_API_BASE` | API base URL (default `http://localhost:3001/api`) |
+| `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` | Realtime + anonymous auth |
+
+**`rag/` (env at launch)**
+| Var | Purpose |
+|-----|---------|
+| `GROQ_API_KEY` | Preferred generation model (Llama 3.3 70B via Groq) |
+| `GROQ_MODEL` | Override model (default `llama-3.3-70b-versatile`) |
+| `GEMINI_API_KEY` | Optional — used only if Groq key is absent |
+
+### Optional: enable Supabase realtime
+If you configure Supabase, also do this **one manual step** so realtime + anonymous
+sign-in work: **Supabase dashboard → Authentication → Sign In / Providers → enable
+“Anonymous sign-ins” → Save.** Until then, the app falls back to local JSON automatically.
 
 ---
 
-## Project Structure
+## What the app does (the five tabs)
 
-```
-Sirat/
-│
-├── src/                          ← Frontend (React 19 + TypeScript + Vite)
-│   ├── App.tsx                   ← Screen router, API calls, userId management
-│   ├── types.ts                  ← Shared frontend types (Screen, etc.)
-│   ├── data.ts                   ← Legacy mock data (no longer used by the app)
-│   └── components/
-│       ├── Onboarding.tsx        ← Landing screen
-│       ├── Diagnostic.tsx        ← Single-question diagnostic view
-│       ├── Roadmap.tsx           ← The main path view (vertical spine layout)
-│       ├── TopicDetail.tsx       ← Topic description + resource + complete button
-│       └── Complete.tsx          ← Congratulations screen
-│
-├── server/                       ← Backend (Node.js + Express + TypeScript)
-│   ├── data/
-│   │   ├── topics.json           ← 41 curated topics with prerequisite edges
-│   │   └── db.json               ← Auto-created; stores user progress (JSON)
-│   ├── scripts/
-│   │   └── validate-dag.ts       ← Run `npm run validate` to check for cycles
-│   └── src/
-│       ├── types.ts              ← Topic, UserProgress, RoadmapNode interfaces
-│       ├── frontier.ts           ← Core DAG algorithm (computeFrontier, newlyUnlocked diff)
-│       ├── db.ts                 ← Read/write db.json helpers
-│       ├── groq.ts               ← Groq/Llama integration (dynamic import, safe fallback)
-│       └── index.ts              ← Express app + all API routes
-│
-├── index.html
-├── package.json                  ← Frontend deps
-└── vite.config.ts
-```
+- **Path** — your personalised learning journey. One focal *next step* on top, then the
+  full path (done → ready → upcoming). Sequencing is a real **DAG** computed in code — no
+  LLM decides your order.
+- **Ask** — ask anything about Islam; answers are **retrieved from the Qur'an and
+  authentic Hadith** (HidayahAI RAG) and composed with citations, plus a reminder to
+  verify rulings with a scholar.
+- **Pray** — live prayer times for your city (Aladhan API) with a countdown to the next prayer.
+- **People** — find a revert-friendly masjid, a “before you go” etiquette guide, and
+  request a buddy/mentor (a real human follows up; live status when Supabase is on).
+- **You** — your progress and account.
 
 ---
 
 ## Architecture
 
-### The Core Idea: The Frontier Algorithm
-
-The roadmap is **not** a static ordered list. It is computed from a graph.
-
-Each topic has a `prerequisites` array of other topic IDs. The frontier algorithm checks, for every topic, whether all its prerequisites are in the user's `completedTopicIds` set:
-
-```typescript
-// server/src/frontier.ts
-function computeFrontier(topics, completedIds) {
-  for (const topic of topics) {
-    if (completedIds.has(topic.id)) → "completed"
-    else if (every prerequisite is in completedIds) → "unlocked"
-    else → "locked"
-  }
-}
+```
+Sirat/
+├── src/                 Frontend — React 19 + TypeScript + Vite (PWA)
+│   ├── ui/Shell.tsx     Persistent bottom-tab navigation
+│   ├── screens/         Home (Path), Profile (You)
+│   ├── components/      Diagnostic, TopicDetail, ClarityCards (Ask/RAG), MasjidBridge, PrayerTimes…
+│   └── lib/             supabase, community, prayer helpers
+├── server/              API — Node + Express + TypeScript (tsx)
+│   ├── src/             frontier (DAG), progress (Supabase⇄JSON), clarity, masjid, prayer, index
+│   └── data/            topics.json, masjids.json, etiquette, clarity-cards.json
+├── rag/                 Ask RAG service — Python + FastAPI (HidayahAI, Groq generation)
+│   ├── rag_api.py       FAISS retrieval + LLM answer  →  POST /query
+│   ├── *.index          Qur'an + Hadith FAISS indices (authentic, verbatim from HidayahAI)
+│   └── requirements.txt
+└── public/              PWA manifest, service worker, icons
 ```
 
-When a user completes a topic, we run the frontier twice — before and after — and diff the results to find exactly which nodes just transitioned from `locked` → `unlocked`. This diff (`newlyUnlocked: string[]`) is returned in the API response so the frontend can animate precisely those nodes.
-
-This is deterministic code. No LLM is involved in sequencing. The graph is real.
-
-### Data Flow
-
-```
-Browser                           Express API                    Data
-──────                            ───────────                    ────
-localStorage userId ──────────►  POST /diagnostic/start    ◄── topics.json
-                                  POST /diagnostic/answer   ──► db.json
-                                  POST /diagnostic/complete ──► Groq API (optional)
-                                                            ──► db.json (seed completed)
-                                  GET  /roadmap/:userId     ──► frontier algorithm
-                                  GET  /topic/:topicId      ◄── topics.json
-                                  POST /topic/:id/complete  ──► frontier diff
-                                                            ──► newlyUnlocked[]
-                                                            ──► animate those nodes
-```
-
-### User Identity
-
-No login system. On first load, `App.tsx` generates a random `userId` and stores it in `localStorage`. The backend keys all user state against this ID. To reset your path, clear localStorage.
+### The Ask RAG service (HidayahAI)
+Adapted from [HidayahAI](https://github.com/WasifSohail5/HidayahAI): FAISS vector search
+over the English Qur'an (1,248 vectors) and authentic Hadith (6,832 chunks — Bukhari,
+Muslim, Abu Dawud, Ibn Majah, Nasa'i, Tirmidhi). The index files are the author's
+**verbatim, unmodified** data. Our only change: generation runs on **Groq** (your key)
+instead of Gemini, and the leaked key the repo hardcoded was removed. Sirat's API proxies
+it at `POST /api/ask`. See `rag/README.md`.
 
 ---
 
-## API Reference
+## The topic graph
 
-All endpoints are prefixed with `/api` and served on port `3001`.
+Topics live in [`server/data/topics.json`](server/data/topics.json). Each has a
+`prerequisites` array; the frontier algorithm marks every topic `locked` / `unlocked` /
+`completed`. After editing topics, validate the DAG:
 
-| Method | Route | Body | Response |
-|--------|-------|------|----------|
-| `GET` | `/health` | — | `{ ok: true, topics: 41 }` |
-| `POST` | `/diagnostic/start` | `{ userId }` | `{ question, total }` |
-| `POST` | `/diagnostic/answer` | `{ userId, questionId, answer }` | `{ done, question?, questionIndex?, total? }` |
-| `POST` | `/diagnostic/complete` | `{ userId }` | `{ done, seededTopicIds, roadmap }` |
-| `GET` | `/roadmap/:userId` | — | `{ nodes[], connections[] }` |
-| `GET` | `/topic/:topicId` | — | Full topic object |
-| `POST` | `/topic/:topicId/complete` | `{ userId }` | `{ nodes[], connections[], newlyUnlocked[] }` |
-
-### Response shapes
-
-**Node object** (inside `nodes[]`):
-```typescript
-{
-  topicId: string;
-  status: "locked" | "unlocked" | "completed";
-  title: string;
-  category: "Aqeedah" | "Fiqh" | "Seerah" | "Ibadah" | "Quran" | "Akhlaq";
-  difficulty: 1 | 2 | 3;   // 1=Foundational, 2=Intermediate, 3=Advanced
-}
+```bash
+cd server && npm run validate   # checks for cycles and bad prerequisite IDs
 ```
 
-**Connections** — array of `[fromTopicId, toTopicId]` edges derived from prerequisites.
+---
+
+## API reference (server, `/api`, port 3001)
+
+| Method | Route | Purpose |
+|--------|-------|---------|
+| GET | `/health` | liveness |
+| POST | `/diagnostic/start` · `/answer` · `/complete` | onboarding (+ Groq seeding) |
+| GET | `/roadmap/:userId` · `/topic/:topicId` | the path + topic detail |
+| POST | `/topic/:topicId/complete` | mark done → `newlyUnlocked[]` |
+| POST | `/ask` | **Ask** — proxies the RAG `/query` |
+| GET | `/prayer-times?city=&country=` | live prayer times (Aladhan) |
+| GET | `/masjid/directory` · `/masjid/etiquette` | community |
+| POST | `/masjid/connect` | mentor/buddy request |
+
+Progress routes read an optional `Authorization: Bearer <jwt>` header (Supabase path) and
+fall back to the JSON store otherwise.
 
 ---
 
-## The Topic Graph
-
-Topics live in [`server/data/topics.json`](server/data/topics.json). Each entry:
-
-```json
-{
-  "id": "tawhid-basics",
-  "title": "The Concept of God in Islam (Tawhid)",
-  "description": "...",
-  "category": "Aqeedah",
-  "difficulty": 1,
-  "prerequisites": [],
-  "resource": {
-    "title": "Tawhid: The Concept of God in Islam",
-    "source": "Yaqeen Institute",
-    "url": "https://..."
-  }
-}
-```
-
-### Current topic map (41 nodes)
-
-| Category | Count | Example Topics |
-|----------|-------|----------------|
-| **Aqeedah** (Belief) | 10 | Tawhid, Six Articles of Faith, Prophethood, Qadr, Tawbah |
-| **Ibadah** (Worship) | 7 | Five Pillars, Salah, Wudu, Zakat, Sawm, Hajj, Dhikr |
-| **Fiqh** (Law) | 5 | Shariah intro, Halal & Haram, Prayer times, Friday Prayer, Advanced Fiqh |
-| **Quran** | 5 | Intro, Preservation, Arabic Script, Tajweed, Tafsir |
-| **Seerah** (History) | 6 | Prophet overview, Meccan period, Madinan period, Companions, Islamic calendar, Civilisation |
-| **Akhlaq** (Character) | 8 | Islamic character, Patience, Doubt, Community, Navigating identity, Spiritual excellence |
-
-### Adding a topic
-
-1. Open `server/data/topics.json`
-2. Add your entry with a unique `id` and correct `prerequisites` (use IDs of existing topics)
-3. Run `npm run validate` in the `server/` directory to verify no cycles were introduced
-4. Restart the server — topics are loaded on startup
-
----
-
-## Design System
-
-Sirat follows a strict **Brutalist-minimal** aesthetic. These rules are non-negotiable:
-
-| Rule | Detail |
-|------|--------|
-| **Zero border-radius** | No rounded corners anywhere |
-| **No shadows or gradients** | Borders for separation only |
-| **No decorative icons** | Line icons only if needed, monochrome |
-| **Geist Mono everywhere** | Headers, body, labels, numbers — always monospace |
-| **Uppercase tracking** | Section labels and headings use `text-transform: uppercase` + `letter-spacing` |
-| **Generous whitespace** | Calm companion, not a data dashboard |
-
-### Colour palette
-
-| Token | Hex | Role |
-|-------|-----|------|
-| `--bg` | `#0A1F1A` | Base canvas — near-black, deep green |
-| `--surface` | `#122B24` | Cards, panels |
-| `--primary` | `#0B6E5A` | Buttons, unlocked nodes, CTAs |
-| `--secondary` | `#D5B38E` | Body text on dark, completed nodes, warm accents |
-| `--muted` | `#3D4A45` | Locked nodes, disabled states |
-| `--border` | `#1E332C` | Hairline dividers, card edges |
-| `--text-primary` | `#F2EDE6` | Main headings and body copy |
-| `--text-muted` | `#8B9B94` | Secondary/meta text |
-
-### Motion
-
-- Standard transitions: `150ms linear` or `ease-out` — snappy, mechanical
-- Roadmap re-sequencing: `400ms ease-out` — the one hero interaction, given time to breathe
-- No spring/bounce curves anywhere
-
----
-
-## Development Notes
-
-### TypeScript
-
-Both the frontend and server are fully typed. Run type checks with:
+## Verifying / typechecks
 
 ```bash
 # Frontend
-npx tsc --noEmit
+npm run build          # tsc -b && vite build  (noUnusedLocals is ON)
+npm run lint           # oxlint
 
 # Server
-cd server && npx tsc --noEmit
+cd server && npx tsc --noEmit && npm run validate
 ```
-
-### Validate the topic DAG
-
-Before adding topics in a hackathon context, always validate:
-
-```bash
-cd server
-npm run validate
-# ✅ DAG validation passed — 41 topics, no cycles, all prerequisites valid.
-```
-
-This catches both circular dependencies and references to non-existent topic IDs.
-
-### Resetting a user
-
-Delete the relevant entry from `server/data/db.json`, or clear `localStorage` in the browser (`localStorage.removeItem('sirat_user_id')`).
-
----
-
-## Contributing
-
-### What needs doing
-
-- [ ] **Groq API key** — get a free key from [console.groq.com](https://console.groq.com) and add to `server/.env` for the AI diagnostic mapping to work
-- [ ] **More topics** — the graph has 41 nodes; contributions of well-researched topics with accurate prerequisites and real resource URLs are the most valuable contribution
-- [ ] **Mobile layout** — the current layout is designed desktop-first; a responsive pass on `Roadmap.tsx` would improve the experience on phones
-- [ ] **Geist Mono font loading** — currently falls back to system monospace; add the Google Fonts import to `index.html` for the intended typeface
-
-### Pull request checklist
-
-- [ ] Run `npm run validate` in `server/` — zero errors
-- [ ] Run `npx tsc --noEmit` in both root and `server/` — zero errors
-- [ ] No `border-radius` introduced anywhere
-- [ ] No gradients, shadows, or filled icons
-- [ ] New topics have real external resource URLs (no placeholder links)
-
----
-
-## Deployment
-
-This is a hackathon project — not yet configured for production. For a quick demo deployment:
-
-- **Backend**: Deploy `server/` to Railway, Render, or Fly.io — it's a plain Node process with no external DB dependency (just a JSON file)
-- **Frontend**: `npm run build` produces `dist/` — deploy to Vercel or Netlify, updating the `API` constant in `App.tsx` to point to your deployed backend URL
 
 ---
 
 ## Credits
 
-**Concept & build**: Afzan Khan  
-**Stack**: React 19 + TypeScript + Vite (frontend) · Node.js + Express + TypeScript (backend)  
-**AI**: Groq Llama 3.3-70B (diagnostic mapping only — all roadmap logic is deterministic)  
-**Content**: Topics sourced from Yaqeen Institute, SeekersGuidance, IslamReligion.com, Bayyinah Institute, and primary Islamic texts
+**Concept & build:** Afzan Khan · **Ask RAG:** [HidayahAI](https://github.com/WasifSohail5/HidayahAI)
+by Wasif Sohail (Qur'an + Hadith retrieval) · **Generation:** Groq Llama 3.3 70B ·
+**Prayer times:** Aladhan API · **Content:** Yaqeen Institute, SeekersGuidance,
+IslamReligion.com, and primary Islamic sources.
+
+> Answers in **Ask** are AI-generated from retrieved scripture. Sirat points to knowledge;
+> for a personal ruling, consult a qualified scholar.
