@@ -10,7 +10,22 @@
       "title": "Tawhid: The Concept of God in Islam",
       "source": "Yaqeen Institute",
       "url": "https://yaqeeninstitute.org/read/paper/tawhid-and-its-social-implications"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Al-Ikhlas 112:1-4",
+        "summary": "Declares the absolute oneness, uniqueness, and eternal nature of God, who neither begets nor is begotten.",
+        "url": "https://quran.com/112"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 7372",
+        "grading": "Sahih",
+        "summary": "Establishes that the absolute first step in calling others to Islam is to believe in the oneness of Allah.",
+        "url": "https://sunnah.com/bukhari:7372"
+      }
+    ]
   },
   {
     "id": "six-articles-faith",
@@ -23,7 +38,22 @@
       "title": "The Six Pillars of Faith Explained",
       "source": "IslamReligion.com",
       "url": "https://www.islamreligion.com/articles/10252/six-pillars-of-faith/"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Al-Baqarah 2:285",
+        "summary": "Affirms that faith requires believing in Allah, His angels, His books, and His messengers without distinction.",
+        "url": "https://quran.com/2/285"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih Muslim 8a",
+        "grading": "Sahih",
+        "summary": "The Prophet defines Iman (faith) as belief in Allah, His angels, His books, His messengers, the Last Day, and divine decree (Qadar).",
+        "url": "https://sunnah.com/muslim:8a"
+      }
+    ]
   },
   {
     "id": "prophethood",
@@ -36,7 +66,22 @@
       "title": "Prophethood in Islam",
       "source": "SeekersGuidance",
       "url": "https://seekersguidance.org/answers/islamic-belief/what-is-prophethood-and-why-is-it-necessary/"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Al-Nahl 16:36",
+        "summary": "States that Allah sent a messenger to every nation to call them to worship Him alone and avoid false gods.",
+        "url": "https://quran.com/16/36"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 3443",
+        "grading": "Sahih",
+        "summary": "Clarifies that all prophets share the same core message and theological brotherhood, despite differing law details.",
+        "url": "https://sunnah.com/bukhari:3443"
+      }
+    ]
   },
   {
     "id": "quran-intro",
@@ -49,7 +94,22 @@
       "title": "Introduction to the Quran",
       "source": "Quran.com",
       "url": "https://quran.com/info/introduction"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Al-Baqarah 2:2",
+        "summary": "Introduces the Quran as the divine book free of doubt, serving as a guide for the God-conscious.",
+        "url": "https://quran.com/2/2"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 5027",
+        "grading": "Sahih",
+        "summary": "Encourages the study and teaching of the Quran, designating those who do so as the best of the community.",
+        "url": "https://sunnah.com/bukhari:5027"
+      }
+    ]
   },
   {
     "id": "quran-preservation",
@@ -62,7 +122,22 @@
       "title": "The Preservation of the Quran",
       "source": "Yaqeen Institute",
       "url": "https://yaqeeninstitute.org/read/paper/the-preservation-of-the-quran"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Al-Hijr 15:9",
+        "summary": "Expresses Allah's divine guarantee to preserve the Quran from any alteration or loss.",
+        "url": "https://quran.com/15/9"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 4986",
+        "grading": "Sahih",
+        "summary": "Details the systematic, multi-witness verification process used to compile the Quran into a single volume under Abu Bakr.",
+        "url": "https://sunnah.com/bukhari:4986"
+      }
+    ]
   },
   {
     "id": "prophet-life-overview",
@@ -75,7 +150,22 @@
       "title": "The Sealed Nectar (Ar-Raheeq Al-Makhtum)",
       "source": "Darussalam Publications",
       "url": "https://www.kalamullah.com/Books/The%20Sealed%20Nectar.pdf"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Al-Ahzab 33:21",
+        "summary": "Establishes the life and character of the Prophet Muhammad as an excellent pattern of conduct for believers.",
+        "url": "https://quran.com/33/21"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 3559",
+        "grading": "Sahih",
+        "summary": "The Prophet mentions that he was sent from the best generations of Adam's descendants.",
+        "url": "https://sunnah.com/bukhari:3559"
+      }
+    ]
   },
   {
     "id": "meccan-period",
@@ -114,7 +204,22 @@
       "title": "The Five Pillars of Islam",
       "source": "Yaqeen Institute",
       "url": "https://yaqeeninstitute.org/read/paper/the-five-pillars-of-islam"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah At-Tawbah 9:71",
+        "summary": "Describes the believers as those who establish prayer and give zakah, and obey Allah and His Messenger.",
+        "url": "https://quran.com/9/71"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 8",
+        "grading": "Sahih",
+        "summary": "The Prophet states that Islam is built on five pillars.",
+        "url": "https://sunnah.com/bukhari:8"
+      }
+    ]
   },
   {
     "id": "shahada",
@@ -127,7 +232,22 @@
       "title": "The Meaning of the Shahada",
       "source": "SeekersGuidance",
       "url": "https://seekersguidance.org/answers/islamic-belief/what-does-the-shahada-mean/"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Ali 'Imran 3:18",
+        "summary": "Affirms that there is no deity worthy of worship except Allah, witnessed by Allah Himself, the angels, and people of knowledge.",
+        "url": "https://quran.com/3/18"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 25",
+        "grading": "Sahih",
+        "summary": "Connects acceptance into Islam with declaring that none has the right to be worshipped but Allah and Muhammad is His Messenger.",
+        "url": "https://sunnah.com/bukhari:25"
+      }
+    ]
   },
   {
     "id": "salah-basics",
@@ -140,7 +260,22 @@
       "title": "How to Pray — Step-by-Step Guide",
       "source": "IslamReligion.com",
       "url": "https://www.islamreligion.com/articles/10107/how-to-pray/"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Taha 20:14",
+        "summary": "Command from Allah to establish prayer specifically for His remembrance.",
+        "url": "https://quran.com/20/14"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 631",
+        "grading": "Sahih",
+        "summary": "The Prophet instructs the companions to pray exactly as they have seen him praying.",
+        "url": "https://sunnah.com/bukhari:631"
+      }
+    ]
   },
   {
     "id": "wudu-taharah",
@@ -153,7 +288,22 @@
       "title": "Purification in Islam",
       "source": "IslamWeb.net",
       "url": "https://www.islamweb.net/en/article/182048"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Al-Ma'idah 5:6",
+        "summary": "Lays down the detailed obligations for performing wudu (ablution) and ghusl (purification bath) before standing for prayer.",
+        "url": "https://quran.com/5/6"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih Muslim 223",
+        "grading": "Sahih",
+        "summary": "The Prophet declares that ritual purity is half of faith.",
+        "url": "https://sunnah.com/muslim:223"
+      }
+    ]
   },
   {
     "id": "salah-khushu",
@@ -179,7 +329,22 @@
       "title": "Zakat: Rights and Obligations",
       "source": "Zakat Foundation of America",
       "url": "https://www.zakat.org/what-is-zakat"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Al-Baqarah 2:43",
+        "summary": "Establishes Zakat directly alongside prayer as an obligatory practice of faith.",
+        "url": "https://quran.com/2/43"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 1496",
+        "grading": "Sahih",
+        "summary": "The Prophet instructs that Zakat is an obligation to be taken from the wealthy and returned to the poor.",
+        "url": "https://sunnah.com/bukhari:1496"
+      }
+    ]
   },
   {
     "id": "sawm-ramadan",
@@ -192,7 +357,22 @@
       "title": "Ramadan: A Month of Spiritual Training",
       "source": "IslamOnline.net",
       "url": "https://islamonline.net/en/ramadan-month-of-spiritual-training"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Al-Baqarah 2:183",
+        "summary": "Decrees fasting as an obligation upon believers so that they may attain Taqwa (God-consciousness).",
+        "url": "https://quran.com/2/183"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 1901",
+        "grading": "Sahih",
+        "summary": "Promises complete forgiveness of past sins for whoever fasts during Ramadan with sincere faith and seeking reward.",
+        "url": "https://sunnah.com/bukhari:1901"
+      }
+    ]
   },
   {
     "id": "hajj-overview",
@@ -205,7 +385,22 @@
       "title": "Hajj: A Practical Guide",
       "source": "Saudi Ministry of Hajj & Umrah",
       "url": "https://www.haj.gov.sa/en/pages/hajj-guide"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Ali 'Imran 3:97",
+        "summary": "States that pilgrimage to the House is a duty owed to Allah by all people who are able to undertake the journey.",
+        "url": "https://quran.com/3/97"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 1521",
+        "grading": "Sahih",
+        "summary": "Highlights that performing Hajj sincerely without sin makes a person return as pure as the day they were born.",
+        "url": "https://sunnah.com/bukhari:1521"
+      }
+    ]
   },
   {
     "id": "sunnah-hadith",
@@ -218,7 +413,22 @@
       "title": "The Authority of the Sunnah",
       "source": "IslamWeb.net",
       "url": "https://www.islamweb.net/en/article/178484"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah An-Nisa 4:59",
+        "summary": "Commands believers to obey Allah, obey the Messenger, and refer all matters of dispute back to them.",
+        "url": "https://quran.com/4/59"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 7294",
+        "grading": "Sahih",
+        "summary": "The Prophet states that all of his followers will enter Paradise except those who refuse by disobeying him.",
+        "url": "https://sunnah.com/bukhari:7294"
+      }
+    ]
   },
   {
     "id": "islamic-law-intro",
@@ -257,7 +467,22 @@
       "title": "Hadith of Jibreel: Islam, Iman, Ihsan",
       "source": "Yaqeen Institute",
       "url": "https://yaqeeninstitute.org/read/paper/ihsan-the-third-dimension-of-the-deen"
-    }
+    },
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah An-Nahl 16:90",
+        "summary": "Commands justice, goodwill, and Ihsan (excellence / spiritual beauty) in all aspects of life.",
+        "url": "https://quran.com/16/90"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih Muslim 8a",
+        "grading": "Sahih",
+        "summary": "The Prophet defines the three dimensions of the Deen: Islam, Iman, and Ihsan.",
+        "url": "https://sunnah.com/muslim:8a"
+      }
+    ]
   },
   {
     "id": "arabic-script",
