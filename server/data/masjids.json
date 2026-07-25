@@ -1,0 +1,80 @@
+[
+  {
+    "id": "sample-alnoor-london",
+    "name": "Al-Noor Islamic Centre",
+    "city": "London",
+    "area": "Whitechapel",
+    "revertFriendly": true,
+    "newMuslimClass": true,
+    "womensFacility": true,
+    "languages": ["English", "Arabic", "Bengali"],
+    "note": "Weekly new-Muslim circle on Saturday afternoons. Ask at the desk for the reverts' coordinator — they will walk you through your first visit.",
+    "website": "",
+    "verified": false
+  },
+  {
+    "id": "sample-assalam-london",
+    "name": "Masjid As-Salam",
+    "city": "London",
+    "area": "Finsbury Park",
+    "revertFriendly": true,
+    "newMuslimClass": false,
+    "womensFacility": true,
+    "languages": ["English", "Somali", "Arabic"],
+    "note": "Very welcoming to visitors. English-language khutbah on Fridays. No formal class, but the imam is happy to meet new Muslims one-to-one.",
+    "website": "",
+    "verified": false
+  },
+  {
+    "id": "sample-rahma-birmingham",
+    "name": "Ar-Rahma Masjid & Community Hub",
+    "city": "Birmingham",
+    "area": "Small Heath",
+    "revertFriendly": true,
+    "newMuslimClass": true,
+    "womensFacility": true,
+    "languages": ["English", "Urdu", "Arabic"],
+    "note": "Runs a structured 'New Muslim Foundations' course each term and a monthly reverts' social. Sisters' section has its own entrance and coordinator.",
+    "website": "",
+    "verified": false
+  },
+  {
+    "id": "sample-huda-birmingham",
+    "name": "Al-Huda Mosque",
+    "city": "Birmingham",
+    "area": "Sparkbrook",
+    "revertFriendly": false,
+    "newMuslimClass": false,
+    "womensFacility": false,
+    "languages": ["Urdu", "Arabic"],
+    "note": "Traditional neighbourhood mosque, primarily for daily prayers. Limited English support — better as a place to pray than to learn as a beginner.",
+    "website": "",
+    "verified": false
+  },
+  {
+    "id": "sample-taqwa-manchester",
+    "name": "At-Taqwa Islamic Centre",
+    "city": "Manchester",
+    "area": "Rusholme",
+    "revertFriendly": true,
+    "newMuslimClass": true,
+    "womensFacility": true,
+    "languages": ["English", "Arabic"],
+    "note": "Dedicated new-Muslim mentoring: they pair you with an experienced member for your first months. Free shahada support and documentation.",
+    "website": "",
+    "verified": false
+  },
+  {
+    "id": "sample-madina-manchester",
+    "name": "Madina Masjid",
+    "city": "Manchester",
+    "area": "Cheetham Hill",
+    "revertFriendly": true,
+    "newMuslimClass": false,
+    "womensFacility": true,
+    "languages": ["English", "Arabic", "Urdu"],
+    "note": "Busy central mosque with a helpful front desk. Good for finding congregational prayers and Ramadan iftars; ask about their reverts' WhatsApp group.",
+    "website": "",
+    "verified": false
+  }
+]

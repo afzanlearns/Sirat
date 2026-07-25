@@ -44,6 +44,46 @@
         "q6": "Yes, I was raised in one and know it well"
       },
       "startedAt": "2026-07-24T22:51:45.099Z"
+    },
+    "user_1784958080257_wqtz9w": {
+      "userId": "user_1784958080257_wqtz9w",
+      "completedTopicIds": [
+        "tawhid-basics",
+        "prophet-life-overview",
+        "six-articles-faith",
+        "quran-intro",
+        "shahada",
+        "salah-basics",
+        "wudu-taharah",
+        "zakat-basics",
+        "sawm-ramadan",
+        "hajj-overview",
+        "five-pillars",
+        "sunnah-hadith",
+        "salah-times-adhan",
+        "prophethood",
+        "quran-preservation",
+        "salah-khushu"
+      ],
+      "diagnosticAnswers": {
+        "q1": "I'm inspired by the Quran and its message",
+        "q2": "I've seen translations but haven't studied it",
+        "q3": "It's completely new to me",
+        "q4": "I've studied his life in depth",
+        "q5": "Prayer, fasting and daily worship (Ibadah)",
+        "q6": "I've studied comparative religion informally"
+      },
+      "startedAt": "2026-07-25T08:35:39.201Z"
+    },
+    "user_fallback_test": {
+      "userId": "user_fallback_test",
+      "completedTopicIds": [
+        "tawhid-basics"
+      ],
+      "diagnosticAnswers": {
+        "q1": "I want to understand God and monotheism"
+      },
+      "startedAt": "2026-07-25T09:12:51.963Z"
     }
   }
 }
