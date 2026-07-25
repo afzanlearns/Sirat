@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
-
-const API = (import.meta.env.VITE_API_BASE as string) ?? "http://localhost:3001/api";
+import { API_BASE as API } from "../lib/api";
 
 interface AskResponse {
   query: string;

@@ -1,15 +1,21 @@
-import { isSupabaseEnabled } from "../lib/supabase";
+import { useEffect, useState } from "react";
+import { isSupabaseEnabled, currentUser } from "../lib/supabase";
 
 interface ProfileProps {
   userId: string;
   completed: number;
   total: number;
   onRefresh: () => void;
+  onSignOut?: () => void;
 }
 
-export default function Profile({ userId, completed, total, onRefresh }: ProfileProps) {
+export default function Profile({ completed, total, onRefresh, onSignOut }: ProfileProps) {
   const pct = total ? Math.round((completed / total) * 100) : 0;
-  const isAnon = userId.length > 20 && !userId.startsWith("user_");
+  const [email, setEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isSupabaseEnabled) currentUser().then((u) => setEmail(u?.email ?? null));
+  }, []);
 
   return (
     <div style={{ maxWidth: "560px", margin: "0 auto", padding: "28px 20px 40px", display: "flex", flexDirection: "column", gap: "24px" }}>
@@ -31,28 +37,32 @@ export default function Profile({ userId, completed, total, onRefresh }: Profile
       <section style={{ borderRadius: "var(--r-lg)", border: "1px solid var(--border)", background: "var(--surface)", padding: "22px", display: "flex", flexDirection: "column", gap: "14px" }}>
         <span className="label">Account</span>
         <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-          <span className="h3">{isAnon ? "Guest (this device)" : "Local guest"}</span>
+          <span className="h3" style={{ wordBreak: "break-word" }}>{email ?? "Local guest"}</span>
           <p style={{ fontSize: "0.9rem", color: "var(--text-2)", lineHeight: 1.6 }}>
-            {isSupabaseEnabled
-              ? "Your progress is saved privately. Sign in to keep it across devices — coming next: one-tap Google and passwordless email."
+            {email
+              ? "You're signed in — your path is saved and syncs to this account on any device."
               : "Your progress is saved on this device."}
           </p>
         </div>
-        <button
-          disabled
-          style={{
-            alignSelf: "flex-start",
-            padding: "11px 18px",
-            borderRadius: "var(--r-pill)",
-            border: "1px solid var(--border-strong)",
-            color: "var(--text-muted)",
-            fontSize: "0.9rem",
-            fontWeight: 500,
-            cursor: "not-allowed",
-          }}
-        >
-          Sign in · coming soon
-        </button>
+        {onSignOut && email && (
+          <button
+            onClick={onSignOut}
+            style={{
+              alignSelf: "flex-start",
+              padding: "11px 18px",
+              borderRadius: "var(--r-pill)",
+              border: "1px solid var(--border-strong)",
+              color: "var(--text-2)",
+              fontSize: "0.9rem",
+              fontWeight: 500,
+              transition: "border-color var(--dur), color var(--dur)",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent-soft)"; e.currentTarget.style.color = "var(--text-primary)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border-strong)"; e.currentTarget.style.color = "var(--text-2)"; }}
+          >
+            Sign out
+          </button>
+        )}
       </section>
 
       {/* Graduation ethos */}

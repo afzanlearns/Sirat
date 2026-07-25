@@ -30,15 +30,20 @@ export function getUser(userId: string): UserProgress | null {
   return db.users[userId] ?? null;
 }
 
+function newUser(userId: string): UserProgress {
+  return {
+    userId,
+    completedTopicIds: [],
+    diagnosticAnswers: {},
+    startedAt: new Date().toISOString(),
+    onboarded: false,
+  };
+}
+
 export function getOrCreateUser(userId: string): UserProgress {
   const db = readDB();
   if (!db.users[userId]) {
-    db.users[userId] = {
-      userId,
-      completedTopicIds: [],
-      diagnosticAnswers: {},
-      startedAt: new Date().toISOString(),
-    };
+    db.users[userId] = newUser(userId);
     writeDB(db);
   }
   return db.users[userId];
@@ -50,12 +55,7 @@ export function saveAnswer(
   answer: string
 ): UserProgress {
   const db = readDB();
-  const user = db.users[userId] ?? {
-    userId,
-    completedTopicIds: [],
-    diagnosticAnswers: {},
-    startedAt: new Date().toISOString(),
-  };
+  const user = db.users[userId] ?? newUser(userId);
   user.diagnosticAnswers[questionId] = answer;
   db.users[userId] = user;
   writeDB(db);
@@ -67,12 +67,7 @@ export function seedCompletedTopics(
   topicIds: string[]
 ): UserProgress {
   const db = readDB();
-  const user = db.users[userId] ?? {
-    userId,
-    completedTopicIds: [],
-    diagnosticAnswers: {},
-    startedAt: new Date().toISOString(),
-  };
+  const user = db.users[userId] ?? newUser(userId);
   // Merge without duplicates
   const merged = Array.from(new Set([...user.completedTopicIds, ...topicIds]));
   user.completedTopicIds = merged;
@@ -83,15 +78,19 @@ export function seedCompletedTopics(
 
 export function completeTopic(userId: string, topicId: string): UserProgress {
   const db = readDB();
-  const user = db.users[userId] ?? {
-    userId,
-    completedTopicIds: [],
-    diagnosticAnswers: {},
-    startedAt: new Date().toISOString(),
-  };
+  const user = db.users[userId] ?? newUser(userId);
   if (!user.completedTopicIds.includes(topicId)) {
     user.completedTopicIds.push(topicId);
   }
+  db.users[userId] = user;
+  writeDB(db);
+  return user;
+}
+
+export function setOnboarded(userId: string): UserProgress {
+  const db = readDB();
+  const user = db.users[userId] ?? newUser(userId);
+  user.onboarded = true;
   db.users[userId] = user;
   writeDB(db);
   return user;

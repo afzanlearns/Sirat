@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const API = (import.meta.env.VITE_API_BASE as string) ?? "http://localhost:3001/api";
+import { API_BASE as API } from "./api";
 
 export interface PrayerTimings {
   Fajr: string;

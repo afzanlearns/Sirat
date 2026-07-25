@@ -18,6 +18,7 @@ function mapRow(r: any): UserProgress {
     completedTopicIds: r.completed_topic_ids ?? [],
     diagnosticAnswers: r.diagnostic_answers ?? {},
     startedAt: r.started_at,
+    onboarded: r.onboarded ?? false,
   };
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -104,5 +105,21 @@ export async function completeTopic(
     .select()
     .single();
   if (error || !data) throw new Error(`completeTopic failed: ${error?.message ?? "unknown"}`);
+  return mapRow(data);
+}
+
+export async function setOnboarded(
+  sb: SupabaseClient | null,
+  userId: string
+): Promise<UserProgress> {
+  if (!sb) return filedb.setOnboarded(userId);
+  await getOrCreateUser(sb, userId);
+  const { data, error } = await sb
+    .from("progress")
+    .update({ onboarded: true, updated_at: now() })
+    .eq("user_id", userId)
+    .select()
+    .single();
+  if (error || !data) throw new Error(`setOnboarded failed: ${error?.message ?? "unknown"}`);
   return mapRow(data);
 }

@@ -1,5 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
-import { ensureAnonUser, authHeaders } from "./lib/supabase";
+import {
+  authHeaders,
+  currentUserId,
+  onAuthChange,
+  signOut,
+  isSupabaseEnabled,
+} from "./lib/supabase";
 import Onboarding from "./components/Onboarding";
 import Diagnostic from "./components/Diagnostic";
 import TopicDetail from "./components/TopicDetail";
@@ -9,12 +15,11 @@ import MasjidBridge from "./components/MasjidBridge";
 import PrayerTimes from "./components/PrayerTimes";
 import Home from "./screens/Home";
 import Profile from "./screens/Profile";
+import Auth from "./screens/Auth";
 import Shell, { type Tab } from "./ui/Shell";
+import { API_BASE as API } from "./lib/api";
 
-// ─── API helpers ──────────────────────────────────────────────────────────────
-const API = (import.meta.env.VITE_API_BASE as string) ?? "http://localhost:3001/api";
-
-function getOrCreateUserId(): string {
+function getLocalUserId(): string {
   let id = localStorage.getItem("sirat_user_id");
   if (!id) {
     id = `user_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
@@ -23,7 +28,7 @@ function getOrCreateUserId(): string {
   return id;
 }
 
-type Mode = "onboarding" | "diagnostic" | "app" | "complete";
+type Mode = "loading" | "onboarding" | "auth" | "diagnostic" | "app" | "complete";
 
 interface ServerNode {
   topicId: string;
@@ -54,13 +59,9 @@ export interface TopicDetailData {
 
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [mode, setMode] = useState<Mode>("onboarding");
+  const [mode, setMode] = useState<Mode>("loading");
   const [tab, setTab] = useState<Tab>("path");
-  const [userId, setUserId] = useState<string>(getOrCreateUserId);
-
-  useEffect(() => {
-    ensureAnonUser().then((uid) => uid && setUserId(uid));
-  }, []);
+  const [userId, setUserId] = useState<string>("");
 
   const [roadmap, setRoadmap] = useState<ServerRoadmap | null>(null);
 
@@ -73,14 +74,8 @@ export default function App() {
   const [topicDetail, setTopicDetail] = useState<TopicDetailData | null>(null);
   const [loadingTopic, setLoadingTopic] = useState(false);
 
-  const refreshRoadmap = useCallback(async () => {
-    const res = await fetch(`${API}/roadmap/${userId}`, { headers: await authHeaders() });
-    setRoadmap((await res.json()) as ServerRoadmap);
-  }, [userId]);
-
-  const handleBegin = useCallback(async () => {
-    const uid = (await ensureAnonUser()) ?? userId;
-    if (uid !== userId) setUserId(uid);
+  // ── Start the diagnostic for a given user ────────────────────────────────────
+  const startDiagnostic = useCallback(async (uid: string) => {
     const res = await fetch(`${API}/diagnostic/start`, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...(await authHeaders()) },
@@ -92,7 +87,91 @@ export default function App() {
     setQuestionIndex(0);
     setAnswers({});
     setMode("diagnostic");
-  }, [userId]);
+  }, []);
+
+  // ── Route a known user: straight to app if onboarded, else diagnostic ─────────
+  const routeFor = useCallback(
+    async (uid: string) => {
+      const headers = await authHeaders();
+      try {
+        const meRes = await fetch(`${API}/me/${uid}`, { headers });
+        const { onboarded } = (await meRes.json()) as { onboarded: boolean };
+        if (onboarded) {
+          const rm = await fetch(`${API}/roadmap/${uid}`, { headers });
+          setRoadmap((await rm.json()) as ServerRoadmap);
+          setTab("path");
+          setMode("app");
+        } else {
+          await startDiagnostic(uid);
+        }
+      } catch {
+        // Network trouble — let them (re)start rather than hang on a spinner.
+        setMode(isSupabaseEnabled ? "onboarding" : "onboarding");
+      }
+    },
+    [startDiagnostic]
+  );
+
+  // ── Bootstrap: restore session (stateful) ────────────────────────────────────
+  useEffect(() => {
+    let unsub = () => {};
+    (async () => {
+      if (!isSupabaseEnabled) {
+        // No auth configured — use a local id, still restore onboarded state.
+        const uid = getLocalUserId();
+        setUserId(uid);
+        await routeFor(uid);
+        return;
+      }
+      const uid = await currentUserId();
+      if (uid) {
+        setUserId(uid);
+        await routeFor(uid);
+      } else {
+        setMode("onboarding");
+      }
+      // React to sign-out (and cross-tab session changes).
+      unsub = onAuthChange((newUid) => {
+        if (!newUid) {
+          setRoadmap(null);
+          setUserId("");
+          setMode("onboarding");
+        }
+      });
+    })();
+    return () => unsub();
+  }, [routeFor]);
+
+  // ── Onboarding "Begin" → auth gate (or straight in) ──────────────────────────
+  const handleBegin = useCallback(async () => {
+    if (!isSupabaseEnabled) {
+      const uid = getLocalUserId();
+      setUserId(uid);
+      await startDiagnostic(uid);
+      return;
+    }
+    const uid = await currentUserId();
+    if (uid) {
+      setUserId(uid);
+      await routeFor(uid);
+    } else {
+      setMode("auth");
+    }
+  }, [routeFor, startDiagnostic]);
+
+  // ── Auth success ─────────────────────────────────────────────────────────────
+  const handleAuthed = useCallback(async () => {
+    const uid = await currentUserId();
+    if (!uid) return;
+    setUserId(uid);
+    setMode("loading");
+    await routeFor(uid);
+  }, [routeFor]);
+
+  const handleSignOut = useCallback(async () => {
+    await signOut();
+    // onAuthChange handles routing to onboarding.
+  }, []);
 
   const handleAnswer = useCallback(
     async (answer: string) => {
@@ -125,6 +204,11 @@ export default function App() {
     },
     [userId, currentQuestion, answers]
   );
+
+  const refreshRoadmap = useCallback(async () => {
+    const res = await fetch(`${API}/roadmap/${userId}`, { headers: await authHeaders() });
+    setRoadmap((await res.json()) as ServerRoadmap);
+  }, [userId]);
 
   const handleOpenTopic = useCallback(async (topicId: string) => {
     setSelectedTopicId(topicId);
@@ -160,13 +244,15 @@ export default function App() {
     setTopicDetail(null);
   }, []);
 
-  const handleRestart = useCallback(() => {
-    localStorage.removeItem("sirat_user_id");
-    window.location.reload();
-  }, []);
-
-  // ── Pre-app flows (full screen) ──────────────────────────────────────────────
+  // ── Full-screen flows ────────────────────────────────────────────────────────
+  if (mode === "loading")
+    return (
+      <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)" }}>
+        <span className="label" style={{ color: "var(--text-muted)" }}>Loading…</span>
+      </div>
+    );
   if (mode === "onboarding") return <Onboarding onBegin={handleBegin} />;
+  if (mode === "auth") return <Auth onAuthed={handleAuthed} />;
   if (mode === "diagnostic" && currentQuestion)
     return (
       <Diagnostic
@@ -181,14 +267,15 @@ export default function App() {
       <Complete
         completedCount={roadmap?.nodes.filter((n) => n.status === "completed").length ?? 0}
         totalCount={roadmap?.nodes.length ?? 0}
-        onRestart={handleRestart}
+        onRestart={() => setMode("app")}
       />
     );
 
-  // ── Topic detail pushes over the shell (its own fixed CTA needs the full height)
-  const selectedNode = selectedTopicId && roadmap
-    ? roadmap.nodes.find((n) => n.topicId === selectedTopicId) ?? null
-    : null;
+  // ── Topic detail pushes over the shell (its fixed CTA needs full height) ─────
+  const selectedNode =
+    selectedTopicId && roadmap
+      ? roadmap.nodes.find((n) => n.topicId === selectedTopicId) ?? null
+      : null;
   if (selectedNode)
     return (
       <TopicDetail
@@ -218,6 +305,7 @@ export default function App() {
           completed={roadmap?.nodes.filter((n) => n.status === "completed").length ?? 0}
           total={roadmap?.nodes.length ?? 0}
           onRefresh={refreshRoadmap}
+          onSignOut={isSupabaseEnabled ? handleSignOut : undefined}
         />
       )}
     </Shell>

@@ -17,6 +17,8 @@ export interface UserProgress {
   completedTopicIds: string[];
   diagnosticAnswers: Record<string, string>;
   startedAt: string;
+  /** True once the user has finished the diagnostic — drives stateful routing. */
+  onboarded: boolean;
 }
 
 export interface DiagnosticQuestion {

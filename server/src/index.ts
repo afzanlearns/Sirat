@@ -11,6 +11,7 @@ import {
   saveAnswer,
   seedCompletedTopics,
   completeTopic,
+  setOnboarded,
   getUser,
 } from "./progress.js";
 import { supabaseForRequest } from "./supabase.js";
@@ -94,9 +95,16 @@ const DIAGNOSTIC_QUESTIONS: DiagnosticQuestion[] = [
 // ── App setup ─────────────────────────────────────────────────────────────────
 const app = express();
 
+// Allow localhost and same-Wi-Fi LAN origins (private IP ranges) on the Vite
+// dev/preview ports — so the app works when opened from a phone on the network.
+const LAN_ORIGIN = /^http:\/\/(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+):(5173|4173)$/;
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:4173"],
+    origin(origin, cb) {
+      // Non-browser clients (curl, same-origin) send no Origin — allow them.
+      if (!origin || LAN_ORIGIN.test(origin)) return cb(null, true);
+      cb(new Error(`CORS: origin not allowed: ${origin}`));
+    },
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -106,6 +114,20 @@ app.use(express.json());
 // ── Health ────────────────────────────────────────────────────────────────────
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, topics: TOPICS.length });
+});
+
+// ── Me ──────────────────────────────────────────────────────────────────────────
+// Stateful routing signal: has this (authenticated) user finished the diagnostic?
+app.get("/api/me/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const sb = supabaseForRequest(req.headers.authorization);
+    const user = await getUser(sb, userId);
+    res.json({ onboarded: user?.onboarded ?? false });
+  } catch (err) {
+    console.error("[me]", err);
+    res.status(500).json({ error: "Could not load your profile." });
+  }
 });
 
 // ── Diagnostic ────────────────────────────────────────────────────────────────
@@ -169,10 +191,11 @@ app.post("/api/diagnostic/complete", async (req, res) => {
     const user = await getOrCreateUser(sb, userId);
     const knownTopicIds = await mapAnswersToKnownTopics(user.diagnosticAnswers, TOPICS);
 
-    // Seed the user's completed topics from Groq mapping
-    const updatedUser = await seedCompletedTopics(sb, userId, knownTopicIds);
+    // Seed the user's completed topics from Groq mapping, then mark onboarded.
+    const seededUser = await seedCompletedTopics(sb, userId, knownTopicIds);
+    await setOnboarded(sb, userId);
 
-    const roadmap = buildRoadmapResponse(TOPICS, new Set(updatedUser.completedTopicIds));
+    const roadmap = buildRoadmapResponse(TOPICS, new Set(seededUser.completedTopicIds));
     res.json({ done: true, seededTopicIds: knownTopicIds, roadmap });
   } catch (err) {
     console.error("[diagnostic/complete]", err);

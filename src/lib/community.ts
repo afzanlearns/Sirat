@@ -1,6 +1,6 @@
-import { supabase, isSupabaseEnabled, ensureAnonUser } from "./supabase";
+import { supabase, isSupabaseEnabled, currentUserId } from "./supabase";
 
-const API = (import.meta.env.VITE_API_BASE as string) ?? "http://localhost:3001/api";
+import { API_BASE as API } from "./api";
 
 // ── Shared shapes (camelCase for the UI) ───────────────────────────────────────
 export interface Masjid {
@@ -114,7 +114,7 @@ export async function submitConnect(
   input: ConnectInput
 ): Promise<{ ok: boolean; error?: string; request?: ConnectRequest }> {
   if (isSupabaseEnabled && supabase) {
-    const uid = await ensureAnonUser();
+    const uid = await currentUserId();
     if (uid) {
       const { data, error } = await supabase
         .from("connect_requests")
@@ -156,7 +156,7 @@ export async function submitConnect(
 // ── My requests + realtime (Supabase only) ─────────────────────────────────────
 export async function loadMyRequests(): Promise<ConnectRequest[]> {
   if (!isSupabaseEnabled || !supabase) return [];
-  const uid = await ensureAnonUser();
+  const uid = await currentUserId();
   if (!uid) return [];
   const { data } = await supabase
     .from("connect_requests")
@@ -174,7 +174,7 @@ export async function subscribeMyRequests(
   onChange: (r: ConnectRequest) => void
 ): Promise<() => void> {
   if (!isSupabaseEnabled || !supabase) return () => {};
-  const uid = await ensureAnonUser();
+  const uid = await currentUserId();
   if (!uid) return () => {};
   const client = supabase;
   const channel = client
