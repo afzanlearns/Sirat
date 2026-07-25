@@ -24,4 +24,12 @@ export interface Roadmap {
   connections: [string, string][];
 }
 
-export type Screen = "onboarding" | "diagnostic" | "roadmap" | "topic" | "complete";
+export type Screen =
+  | "onboarding"
+  | "diagnostic"
+  | "roadmap"
+  | "topic"
+  | "complete"
+  | "clarity"
+  | "masjid"
+  | "prayer";

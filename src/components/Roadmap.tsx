@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import PrayerBanner from "./PrayerBanner";
 
 interface ServerNode {
   topicId: string;
@@ -14,6 +15,9 @@ interface RoadmapProps {
   newlyUnlocked: string[];
   onNodeClick: (topicId: string) => void;
   onAnimationComplete: () => void;
+  onOpenClarity: () => void;
+  onOpenMasjid: () => void;
+  onOpenPrayer: () => void;
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -33,9 +37,11 @@ export default function Roadmap({
   newlyUnlocked,
   onNodeClick,
   onAnimationComplete,
+  onOpenClarity,
+  onOpenMasjid,
+  onOpenPrayer,
 }: RoadmapProps) {
   const [animatingUnlocked, setAnimatingUnlocked] = useState<Set<string>>(new Set());
-  const [justCompleted, setJustCompleted] = useState<Set<string>>(new Set());
   const animationRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -82,6 +88,9 @@ export default function Roadmap({
         color: "var(--text-primary)",
       }}
     >
+      {/* ── Next-prayer banner (real data) ── */}
+      <PrayerBanner onOpen={onOpenPrayer} />
+
       {/* ── Stats header ── */}
       <div
         style={{
@@ -165,6 +174,55 @@ export default function Roadmap({
             {progressPercent}%
           </div>
         </div>
+
+        {/* Clarity entry point */}
+        <button
+          onClick={onOpenClarity}
+          style={{
+            marginLeft: "32px",
+            flexShrink: 0,
+            padding: "12px 18px",
+            border: "1px solid var(--secondary)",
+            color: "var(--secondary)",
+            fontSize: "11px",
+            fontWeight: "bold",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            transition: "background-color 150ms ease-out, color 150ms ease-out",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "var(--secondary)";
+            e.currentTarget.style.color = "var(--bg)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "transparent";
+            e.currentTarget.style.color = "var(--secondary)";
+          }}
+        >
+          ASK · CLARITY
+        </button>
+
+        {/* Community / masjid bridge entry point */}
+        <button
+          onClick={onOpenMasjid}
+          style={{
+            marginLeft: "10px",
+            flexShrink: 0,
+            padding: "12px 18px",
+            border: "1px solid var(--primary)",
+            color: "var(--text-primary)",
+            backgroundColor: "var(--primary)",
+            fontSize: "11px",
+            fontWeight: "bold",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            transition: "opacity 150ms ease-out",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+          onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+        >
+          COMMUNITY
+        </button>
       </div>
 
       {/* ── Scrollable path ── */}
