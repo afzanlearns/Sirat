@@ -425,9 +425,47 @@ def generate_alternatives(query):
 # [Rest of the functions remain the same as in your original file...]
 # I'll include the key functions needed for the API to work
 
+# Shown for questions we won't answer (invalid / off-topic / abusive).
+REFUSAL_MESSAGE = (
+    "That doesn't look like a genuine question I can answer from the Qur'an and "
+    "Hadith. Please ask a clear, complete question about Islam — for example about "
+    "worship, character, the Qur'an, or the life of the Prophet ﷺ."
+)
+
+_ABUSE_WORDS = {
+    "fuck", "fucking", "shit", "bitch", "bastard", "asshole", "dick",
+    "cunt", "slut", "whore", "nigger", "faggot", "retard",
+}
+
+
+def is_valid_query(query: str) -> bool:
+    """Cheap pre-filter for empty, too-short, letterless, or abusive input —
+    rejected before any LLM cost. Subtler cases (jokes, off-topic) are caught by
+    the REFUSE guard in the prompt."""
+    s = (query or "").strip()
+    if len(s) < 5:
+        return False
+    if sum(c.isalpha() for c in s) < 3:
+        return False
+    if set(re.findall(r"[a-zA-Z']+", s.lower())) & _ABUSE_WORDS:
+        return False
+    return True
+
+
 async def process_islamic_query(query: str, source_type: str = "auto", top_k: int = 10):
     """Process an Islamic query and generate a response with references."""
     start_time = time.time()
+
+    # Guard: refuse invalid/abusive input up front (no retrieval, no LLM cost).
+    if not is_valid_query(query):
+        return {
+            "query": query,
+            "answer": REFUSAL_MESSAGE,
+            "source_type": "none",
+            "processing_time": time.time() - start_time,
+            "references_count": 0,
+            "alternatives_used": None,
+        }
 
     # If source_type is auto, detect it from the query
     if source_type == "auto":
@@ -466,8 +504,28 @@ async def process_islamic_query(query: str, source_type: str = "auto", top_k: in
             return t
         return t[:limit].rsplit(" ", 1)[0] + "…"
 
+    # Map the source's original file-path label to a proper collection name so
+    # references read cleanly ("Sunan Ibn Majah, Hadith 3662") instead of leaking
+    # "E:\...\AHADEES\eng-ibnmajah". Only the label is rewritten — the narration
+    # text and the stored data are untouched.
+    _HADITH_BOOKS = {
+        "eng_bukhari": "Sahih Bukhari",
+        "eng_muslim": "Sahih Muslim",
+        "eng-ibnmajah": "Sunan Ibn Majah",
+        "eng-tirmidhi": "Jami' at-Tirmidhi",
+        "eng-nasai": "Sunan an-Nasa'i",
+        "eng_dawood": "Sunan Abi Dawud",
+    }
+
+    def _clean_source(text):
+        return re.sub(
+            r"[A-Za-z]:[\\/].*?AHADEES[\\/]([A-Za-z_\-]+)",
+            lambda m: _HADITH_BOOKS.get(m.group(1), m.group(1)),
+            text or "",
+        )
+
     quran_texts = [_clip(r["text"]) for r in raw_results if r.get("source") == "quran"]
-    hadith_texts = [_clip(r["text"]) for r in raw_results if r.get("source") == "hadith"]
+    hadith_texts = [_clip(_clean_source(r["text"])) for r in raw_results if r.get("source") == "hadith"]
 
     # Build context based on what we found
     context = ""
@@ -487,13 +545,18 @@ async def process_islamic_query(query: str, source_type: str = "auto", top_k: in
 
     generated = False
     if llm_ready():
-        prompt = f"""You are a knowledgeable, humble Islamic assistant. Answer the question using ONLY the provided sources.
+        prompt = f"""You are a knowledgeable, humble Islamic assistant. Answer using ONLY the provided sources.
 
-Guidelines:
-- Be concise: 2–4 short paragraphs.
-- Cite ONLY the references directly relevant to the question, as "Surah [Name], Ayah [Number]" or "[Collection], Hadith [Number]". Ignore sources that are not relevant.
-- If the provided sources do not really address the question, say so briefly rather than forcing a connection.
+First, judge the question. If it is NOT a genuine, answerable question about Islam — e.g. a joke, nonsense, an incomplete sentence, abusive/offensive, or unrelated to Islam — reply with EXACTLY the single word:
+REFUSE
+(and nothing else).
+
+Otherwise, answer it. Format the whole answer in **Markdown**:
+- Be concise: 2–4 short paragraphs (do not pad the length).
+- Cite ONLY the references directly relevant to the question, inline, as "Surah [Name], Ayah [Number]" or "[Collection], Hadith [Number]". Ignore irrelevant sources.
+- If the sources do not really address the question, say so briefly rather than forcing a connection.
 - Do not issue rulings; where a personal ruling is needed, advise asking a qualified scholar.
+- End with a section titled `## References` listing each source you actually used, one per bullet. Cite Hadith by collection name and number only (e.g. "Sahih Bukhari, Hadith 5972") — never include file paths.
 
 Islamic sources:
 {context}
@@ -502,8 +565,12 @@ Question: {query}
 
 Answer:"""
         try:
-            response = llm_generate(prompt)
-            generated = True
+            out = llm_generate(prompt)
+            if out.strip().upper().startswith("REFUSE"):
+                response = REFUSAL_MESSAGE  # LLM judged it invalid/off-topic
+            else:
+                response = out
+                generated = True
         except Exception as e:
             logger.error(f"Error generating response: {e}")
             response = UNAVAILABLE
