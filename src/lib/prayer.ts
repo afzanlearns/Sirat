@@ -36,28 +36,60 @@ export const PRAYER_ORDER: (keyof PrayerTimings)[] = [
   "Isha",
 ];
 
+export interface StoredLocation {
+  city: string;
+  country: string;
+  latitude: number | null;
+  longitude: number | null;
+}
+
 // ── Location persistence ───────────────────────────────────────────────────────
-export function getStoredLocation(): { city: string; country: string } {
+export function getStoredLocation(): StoredLocation {
+  const latStr = localStorage.getItem("sirat_lat");
+  const lngStr = localStorage.getItem("sirat_lng");
   return {
-    city: localStorage.getItem("sirat_city") || "London",
-    country: localStorage.getItem("sirat_country") || "United Kingdom",
+    city: localStorage.getItem("sirat_city") || "Mumbai",
+    country: localStorage.getItem("sirat_country") || "India",
+    latitude: latStr ? Number(latStr) : null,
+    longitude: lngStr ? Number(lngStr) : null,
   };
 }
 
-export function storeLocation(city: string, country: string): void {
+export function storeLocation(
+  city: string,
+  country: string,
+  latitude?: number | null,
+  longitude?: number | null
+): void {
   localStorage.setItem("sirat_city", city);
   localStorage.setItem("sirat_country", country);
+  if (latitude !== undefined && latitude !== null) {
+    localStorage.setItem("sirat_lat", String(latitude));
+  } else {
+    localStorage.removeItem("sirat_lat");
+  }
+  if (longitude !== undefined && longitude !== null) {
+    localStorage.setItem("sirat_lng", String(longitude));
+  } else {
+    localStorage.removeItem("sirat_lng");
+  }
 }
 
 // ── Fetch ──────────────────────────────────────────────────────────────────────
 export async function fetchPrayerTimes(
-  city: string,
-  country: string
+  city?: string,
+  country?: string,
+  latitude?: number | null,
+  longitude?: number | null
 ): Promise<PrayerTimesData | null> {
   try {
-    const res = await fetch(
-      `${API}/prayer-times?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}`
-    );
+    let url = `${API}/prayer-times`;
+    if (typeof latitude === "number" && typeof longitude === "number") {
+      url += `?latitude=${latitude}&longitude=${longitude}`;
+    } else {
+      url += `?city=${encodeURIComponent(city || "Mumbai")}&country=${encodeURIComponent(country || "India")}`;
+    }
+    const res = await fetch(url);
     if (!res.ok) return null;
     return (await res.json()) as PrayerTimesData;
   } catch {

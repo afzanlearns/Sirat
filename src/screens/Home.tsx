@@ -19,6 +19,8 @@ interface HomeProps {
   nodes: Node[];
   onOpenTopic: (topicId: string) => void;
   onOpenPrayer: () => void;
+  onOpenShelf: () => void;
+  onOpenBasics: () => void;
 }
 
 const CATEGORY: Record<string, string> = {
@@ -68,7 +70,7 @@ function PrayerStrip({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-export default function Home({ nodes, onOpenTopic, onOpenPrayer }: HomeProps) {
+export default function Home({ nodes, onOpenTopic, onOpenPrayer, onOpenShelf, onOpenBasics }: HomeProps) {
   const completed = nodes.filter((n) => n.status === "completed").length;
   const total = nodes.length;
   const pct = total ? Math.round((completed / total) * 100) : 0;
@@ -88,6 +90,57 @@ export default function Home({ nodes, onOpenTopic, onOpenPrayer }: HomeProps) {
           </span>
         </div>
         <PrayerStrip onOpen={onOpenPrayer} />
+        {/* ── Library & Basics strip ─────────────────────────────────────────── */}
+        <div style={{ display: "flex", gap: "10px" }}>
+          {/* Library */}
+          <button
+            onClick={onOpenShelf}
+            style={{
+              flex: 1, textAlign: "left", padding: "11px 14px",
+              borderRadius: "var(--r-md)", border: "1px solid var(--border)",
+              background: "var(--surface)", display: "flex", alignItems: "center",
+              gap: "10px", cursor: "pointer",
+              transition: "border-color var(--dur) var(--ease-out), background var(--dur)",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--border-strong)"; e.currentTarget.style.background = "var(--surface-2)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.background = "var(--surface)"; }}
+          >
+            {/* open-book icon (Lucide) */}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+              <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--text-primary)" }}>Library</span>
+              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>Reference books</span>
+            </div>
+          </button>
+
+          {/* Worship Basics */}
+          <button
+            onClick={onOpenBasics}
+            style={{
+              flex: 1, textAlign: "left", padding: "11px 14px",
+              borderRadius: "var(--r-md)", border: "1px solid var(--border)",
+              background: "var(--surface)", display: "flex", alignItems: "center",
+              gap: "10px", cursor: "pointer",
+              transition: "border-color var(--dur) var(--ease-out), background var(--dur)",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--border-strong)"; e.currentTarget.style.background = "var(--surface-2)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.background = "var(--surface)"; }}
+          >
+            {/* mosque / prayer icon */}
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <path d="M3 21V10a2 2 0 0 1 2-2h1V6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2h4V6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2h1a2 2 0 0 1 2 2v11"/>
+              <path d="M9 21v-6a3 3 0 0 1 6 0v6"/>
+              <path d="M12 2c0 0-3 2-3 4h6c0-2-3-4-3-4z"/>
+            </svg>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+              <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--text-primary)" }}>Worship Basics</span>
+              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>Steps & etiquette</span>
+            </div>
+          </button>
+        </div>
       </header>
 
       {/* Focal: your next step */}
