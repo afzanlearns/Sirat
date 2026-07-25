@@ -1,0 +1,152 @@
+[
+  {
+    "id": "quran-mushaf",
+    "title": "The Qur\u2019an",
+    "author": "\u2014",
+    "category": "quran-tafsir",
+    "readingOrder": 1,
+    "authenticated": true,
+    "description": "The primary scripture of Islam, believed to be the verbatim word of Allah revealed to the Prophet Muhammad \ufe3a over 23 years \u2014 the foundation of every other Islamic discipline.",
+    "externalLink": "https://quran.com"
+  },
+  {
+    "id": "tafsir-ibn-kathir",
+    "title": "Tafsir Ibn Kath\u012br (Abridged)",
+    "author": "Ibn Kath\u012br (abridged by Al-Mub\u0101rakp\u016br\u012b)",
+    "category": "quran-tafsir",
+    "readingOrder": 2,
+    "authenticated": true,
+    "description": "One of the most widely-read classical commentaries on the Qur\u2019an, drawing on hadith and the understanding of the Companions to explain each passage.",
+    "externalLink": ""
+  },
+  {
+    "id": "nawawi-forty",
+    "title": "Al-Arba\u2018\u012bn al-Nawawiyya (Forty Hadith)",
+    "author": "Im\u0101m al-Nawaw\u012b",
+    "category": "hadith-collection",
+    "readingOrder": 1,
+    "authenticated": true,
+    "description": "Forty-two carefully selected hadith covering the essentials of Islamic practice and character \u2014 the traditional first hadith text for beginners.",
+    "externalLink": "https://sunnah.com/nawawi40"
+  },
+  {
+    "id": "riyad-al-salihin",
+    "title": "Riy\u0101\u1e0d al-\u1e62\u0101li\u1e25\u012bn (Gardens of the Righteous)",
+    "author": "Im\u0101m al-Nawaw\u012b",
+    "category": "hadith-collection",
+    "readingOrder": 2,
+    "authenticated": true,
+    "description": "A comprehensive anthology of hadith on every dimension of Muslim life \u2014 manners, worship, family, and ethics \u2014 arranged thematically for easy study.",
+    "externalLink": "https://sunnah.com/riyadussalihin"
+  },
+  {
+    "id": "sahih-al-bukhari",
+    "title": "\u1e62a\u1e25\u012b\u1e25 al-Bukh\u0101r\u012b",
+    "author": "Im\u0101m al-Bukh\u0101r\u012b",
+    "category": "hadith-collection",
+    "readingOrder": 3,
+    "authenticated": true,
+    "description": "Considered the most rigorously authenticated collection of hadith in Sunni Islam, compiled after over a decade of critical evaluation of narrations.",
+    "externalLink": "https://sunnah.com/bukhari"
+  },
+  {
+    "id": "sahih-muslim",
+    "title": "\u1e62a\u1e25\u012b\u1e25 Muslim",
+    "author": "Im\u0101m Muslim",
+    "category": "hadith-collection",
+    "readingOrder": 4,
+    "authenticated": true,
+    "description": "The second of the two most authentic hadith collections, praised by scholars for its precise organisation and the inclusion of complete chains of transmission.",
+    "externalLink": "https://sunnah.com/muslim"
+  },
+  {
+    "id": "muwatta-malik",
+    "title": "Al-Muwa\u1e6d\u1e6da\u2019",
+    "author": "Im\u0101m M\u0101lik ibn Anas",
+    "category": "hadith-collection",
+    "readingOrder": 5,
+    "authenticated": true,
+    "description": "One of the earliest systematic collections of hadith and the legal practice of Madinah, compiled by the founder of the Maliki school of jurisprudence.",
+    "externalLink": "https://sunnah.com/malik"
+  },
+  {
+    "id": "sunan-abu-dawud",
+    "title": "Sunan Ab\u012b D\u0101w\u016bd",
+    "author": "Ab\u016b D\u0101w\u016bd al-Sijist\u0101n\u012b",
+    "category": "hadith-collection",
+    "readingOrder": 6,
+    "authenticated": true,
+    "description": "A major hadith collection focusing especially on legal rulings and religious practice, containing around 5,300 selected narrations.",
+    "externalLink": "https://sunnah.com/abudawud"
+  },
+  {
+    "id": "jami-tirmidhi",
+    "title": "J\u0101mi\u2018 al-Tirmidh\u012b",
+    "author": "Im\u0101m al-Tirmidh\u012b",
+    "category": "hadith-collection",
+    "readingOrder": 7,
+    "authenticated": true,
+    "description": "A major hadith collection notable for including grading commentary on each narration and covering topics from acts of worship to etiquette.",
+    "externalLink": "https://sunnah.com/tirmidhi"
+  },
+  {
+    "id": "sunan-ibn-majah",
+    "title": "Sunan Ibn M\u0101jah",
+    "author": "Ibn M\u0101jah",
+    "category": "hadith-collection",
+    "readingOrder": 8,
+    "authenticated": true,
+    "description": "The sixth of the six canonical hadith collections, covering legal, ethical, and eschatological topics with a distinctive focus on jurisprudence.",
+    "externalLink": "https://sunnah.com/ibnmajah"
+  },
+  {
+    "id": "sealed-nectar",
+    "title": "Al-Ra\u1e25\u012bq al-Makht\u016bm (The Sealed Nectar)",
+    "author": "\u1e62af\u012bur-Ra\u1e25m\u0101n al-Mub\u0101rakp\u016br\u012b",
+    "category": "seerah",
+    "readingOrder": 1,
+    "authenticated": true,
+    "description": "A prize-winning modern biography of the Prophet Muhammad \ufe3a, covering his life from birth through the establishment of the Islamic state in Madinah.",
+    "externalLink": "https://www.kalamullah.com/Books/The%20Sealed%20Nectar.pdf"
+  },
+  {
+    "id": "in-footsteps-prophet",
+    "title": "In the Footsteps of the Prophet",
+    "author": "Tariq Ramadan",
+    "category": "seerah",
+    "readingOrder": 2,
+    "authenticated": true,
+    "description": "A spiritually reflective biography of the Prophet that explores the inner dimensions of his character, his relationships, and the relevance of his example today.",
+    "externalLink": ""
+  },
+  {
+    "id": "fundamentals-tawhid",
+    "title": "The Fundamentals of Tawhid",
+    "author": "Bilal Philips",
+    "category": "aqeedah",
+    "readingOrder": 1,
+    "authenticated": true,
+    "description": "A clear, accessible introduction to the Islamic concept of God's oneness \u2014 its categories, its implications, and what constitutes its negation.",
+    "externalLink": ""
+  },
+  {
+    "id": "usul-thalatha",
+    "title": "U\u1e63\u016bl al-Thal\u0101tha (The Three Fundamental Principles)",
+    "author": "Mu\u1e25ammad ibn \u2018Abd al-Wahh\u0101b",
+    "category": "aqeedah",
+    "readingOrder": 2,
+    "authenticated": true,
+    "description": "A concise classical text explaining the three foundational questions every Muslim should know: Who is your Lord? What is your religion? Who is your Prophet?",
+    "externalLink": ""
+  },
+  {
+    "id": "fiqh-al-sunna",
+    "title": "Fiqh al-Sunna",
+    "author": "Sayyid S\u0101biq",
+    "category": "fiqh",
+    "readingOrder": 1,
+    "authenticated": true,
+    "description": "A comprehensive practical guide to Islamic law rooted in Qur\u2019an and hadith, covering purification, prayer, fasting, zakat, and pilgrimage in accessible language.",
+    "externalLink": ""
+  }
+]

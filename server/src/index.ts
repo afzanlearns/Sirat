@@ -29,6 +29,14 @@ const TOPICS: Topic[] = JSON.parse(
   readFileSync(join(__dirname, "../data/topics.json"), "utf-8")
 );
 
+const BOOKS: unknown[] = JSON.parse(
+  readFileSync(join(__dirname, "../data/books.json"), "utf-8")
+);
+
+const ETIQUETTE_BASICS: unknown[] = JSON.parse(
+  readFileSync(join(__dirname, "../data/etiquette-basics.json"), "utf-8")
+);
+
 const DIAGNOSTIC_QUESTIONS: DiagnosticQuestion[] = [
   {
     id: "q1",
@@ -114,6 +122,18 @@ app.use(express.json());
 // ── Health ────────────────────────────────────────────────────────────────────
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, topics: TOPICS.length });
+});
+
+// ── Books (Knowledge Shelf) ────────────────────────────────────────────────────
+// Returns the curated Islamic reference library — static seed data, not generated.
+app.get("/api/books", (_req, res) => {
+  res.json(BOOKS);
+});
+
+// ── Etiquette Basics (Worship Guides) ──────────────────────────────────────────
+// Returns practical step-by-step guides (wudu, prayer, masjid etiquette) with sources.
+app.get("/api/etiquette-basics", (_req, res) => {
+  res.json(ETIQUETTE_BASICS);
 });
 
 // ── Me ──────────────────────────────────────────────────────────────────────────
@@ -342,16 +362,22 @@ app.post("/api/ask", async (req, res) => {
   }
 });
 
-// ── Prayer times (real data via Aladhan) ──────────────────────────────────────
-
-// GET /api/prayer-times?city=&country=&method=
+// GET /api/prayer-times?city=&country=&latitude=&longitude=&method=
 app.get("/api/prayer-times", async (req, res) => {
-  const city = (typeof req.query.city === "string" && req.query.city) || "London";
-  const country =
-    (typeof req.query.country === "string" && req.query.country) || "United Kingdom";
+  const latitude = req.query.latitude ? Number(req.query.latitude) : undefined;
+  const longitude = req.query.longitude ? Number(req.query.longitude) : undefined;
   const method = Number(req.query.method) || 2;
 
-  const data = await getPrayerTimes(city, country, method);
+  let data;
+  if (typeof latitude === "number" && !isNaN(latitude) && typeof longitude === "number" && !isNaN(longitude)) {
+    data = await getPrayerTimes(undefined, undefined, method, latitude, longitude);
+  } else {
+    const city = (typeof req.query.city === "string" && req.query.city) || "Mumbai";
+    const country =
+      (typeof req.query.country === "string" && req.query.country) || "India";
+    data = await getPrayerTimes(city, country, method);
+  }
+
   if (!data) {
     return res.status(502).json({ error: "Could not fetch prayer times right now." });
   }

@@ -16,6 +16,9 @@ import PrayerTimes from "./components/PrayerTimes";
 import Home from "./screens/Home";
 import Profile from "./screens/Profile";
 import Auth from "./screens/Auth";
+import Shelf from "./components/Shelf";
+import BasicsList, { type BasicsItem } from "./components/BasicsList";
+import BasicsDetail from "./components/BasicsDetail";
 import Shell, { type Tab } from "./ui/Shell";
 import { API_BASE as API } from "./lib/api";
 
@@ -48,6 +51,14 @@ interface ServerQuestion {
   question: string;
   options: string[];
 }
+export interface Evidence {
+  type: "quran" | "hadith" | "video";
+  reference: string;
+  summary?: string;
+  grading?: string;
+  url: string;
+}
+
 export interface TopicDetailData {
   id: string;
   title: string;
@@ -55,6 +66,7 @@ export interface TopicDetailData {
   category: string;
   difficulty: number;
   resource: { title: string; source: string; url: string };
+  evidence?: Evidence[];
 }
 
 // ─── App ──────────────────────────────────────────────────────────────────────
@@ -73,6 +85,9 @@ export default function App() {
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [topicDetail, setTopicDetail] = useState<TopicDetailData | null>(null);
   const [loadingTopic, setLoadingTopic] = useState(false);
+  const [showShelf, setShowShelf] = useState(false);
+  const [showBasics, setShowBasics] = useState(false);
+  const [selectedBasicsItem, setSelectedBasicsItem] = useState<BasicsItem | null>(null);
 
   // ── Start the diagnostic for a given user ────────────────────────────────────
   const startDiagnostic = useCallback(async (uid: string) => {
@@ -271,6 +286,34 @@ export default function App() {
       />
     );
 
+  // ── Shelf pushes over the shell (same pattern as TopicDetail) ───────────────────
+  const completedCategories = roadmap?.nodes
+    .filter((n) => n.status === "completed")
+    .map((n) => n.category) ?? [];
+  if (showShelf)
+    return (
+      <Shelf
+        completedTopicCategories={completedCategories}
+        onBack={() => setShowShelf(false)}
+      />
+    );
+
+  // ── Basics detail pushes over the basics list ─────────────────────────────
+  if (showBasics && selectedBasicsItem)
+    return (
+      <BasicsDetail
+        item={selectedBasicsItem}
+        onBack={() => setSelectedBasicsItem(null)}
+      />
+    );
+  if (showBasics)
+    return (
+      <BasicsList
+        onOpenItem={(item) => setSelectedBasicsItem(item)}
+        onBack={() => setShowBasics(false)}
+      />
+    );
+
   // ── Topic detail pushes over the shell (its fixed CTA needs full height) ─────
   const selectedNode =
     selectedTopicId && roadmap
@@ -292,7 +335,13 @@ export default function App() {
   return (
     <Shell active={tab} onChange={setTab}>
       {tab === "path" && roadmap && (
-        <Home nodes={roadmap.nodes} onOpenTopic={handleOpenTopic} onOpenPrayer={() => setTab("pray")} />
+        <Home
+          nodes={roadmap.nodes}
+          onOpenTopic={handleOpenTopic}
+          onOpenPrayer={() => setTab("pray")}
+          onOpenShelf={() => setShowShelf(true)}
+          onOpenBasics={() => setShowBasics(true)}
+        />
       )}
       {tab === "ask" && <ClarityCards onBack={() => setTab("path")} />}
       {tab === "pray" && (

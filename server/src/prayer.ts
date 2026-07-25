@@ -24,11 +24,17 @@ function clean(time: string): string {
 }
 
 export async function getPrayerTimes(
-  city: string,
-  country: string,
-  method = 2
+  city?: string,
+  country?: string,
+  method = 2,
+  latitude?: number,
+  longitude?: number
 ): Promise<PrayerTimesResult | null> {
-  const key = `${city.toLowerCase()}|${country.toLowerCase()}|${method}`;
+  const isCoords = typeof latitude === "number" && typeof longitude === "number";
+  const key = isCoords
+    ? `${latitude}|${longitude}|${method}`
+    : `${(city ?? "").toLowerCase()}|${(country ?? "").toLowerCase()}|${method}`;
+  
   const cached = cache.get(key);
   const day = todayKey();
   if (cached && cached.dayKey === day) return cached.data;
@@ -38,11 +44,9 @@ export async function getPrayerTimes(
     return null;
   }
 
-  const url =
-    `https://api.aladhan.com/v1/timingsByCity` +
-    `?city=${encodeURIComponent(city)}` +
-    `&country=${encodeURIComponent(country)}` +
-    `&method=${method}`;
+  const url = isCoords
+    ? `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=${method}`
+    : `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city ?? "")}&country=${encodeURIComponent(country ?? "")}&method=${method}`;
 
   try {
     const res = await fetch(url); // fetch follows Aladhan's 302 to the dated URL
@@ -75,8 +79,8 @@ export async function getPrayerTimes(
     };
 
     const data: PrayerTimesResult = {
-      city,
-      country,
+      city: city || (isCoords ? "Detected Location" : "Unknown"),
+      country: country || "",
       timezone: json.data.meta.timezone,
       gregorianDate: json.data.date.readable,
       hijriDate: json.data.date.hijri.date,

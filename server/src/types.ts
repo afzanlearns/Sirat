@@ -1,3 +1,11 @@
+export interface Evidence {
+  type: "quran" | "hadith" | "video";
+  reference: string;
+  summary?: string;
+  grading?: string;
+  url: string;
+}
+
 export interface Topic {
   id: string;
   title: string;
@@ -10,6 +18,7 @@ export interface Topic {
     source: string;
     url: string;
   };
+  evidence?: Evidence[];
 }
 
 export interface UserProgress {
