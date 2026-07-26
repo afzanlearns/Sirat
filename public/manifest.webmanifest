@@ -1,16 +1,26 @@
 {
   "name": "Sirat — Learning Companion",
   "short_name": "Sirat",
-  "description": "A calm, guided learning companion for new Muslims. Works offline.",
-  "start_url": "/",
+  "description": "A calm, guided learning companion for new Muslims: a personalised path, answers from the Qur'an and authentic Hadith, prayer times, and community. Works offline.",
+  "id": "/",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
-  "background_color": "#0A1F1A",
-  "theme_color": "#0A1F1A",
+  "background_color": "#0C1A15",
+  "theme_color": "#0C1A15",
+  "lang": "en",
+  "dir": "ltr",
   "categories": ["education", "lifestyle"],
   "icons": [
-    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Ask a question", "short_name": "Ask", "url": "/?tab=ask", "description": "Ask from the Qur'an and Hadith" },
+    { "name": "Prayer times", "short_name": "Pray", "url": "/?tab=pray", "description": "Today's prayer times" }
   ]
 }

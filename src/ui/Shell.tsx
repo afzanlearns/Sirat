@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import InstallPrompt from "./InstallPrompt";
 
 export type Tab = "path" | "ask" | "pray" | "people" | "you";
 
@@ -43,6 +44,9 @@ export default function Shell({ active, onChange, children }: ShellProps) {
     >
       {/* Content */}
       <main style={{ flex: 1, overflowY: "auto", minHeight: 0 }}>{children}</main>
+
+      <InstallPrompt />
+
 
       {/* Bottom tab bar */}
       <nav

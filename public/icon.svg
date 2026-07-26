@@ -1,11 +1,15 @@
-<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" fill="#0A1F1A"/>
-  <!-- The straight path: a vertical spine with ascending nodes -->
-  <rect x="253" y="128" width="6" height="256" fill="#1E332C"/>
-  <!-- completed node (bottom) -->
-  <rect x="232" y="352" width="48" height="48" fill="#D5B38E"/>
-  <!-- ready node (middle) -->
-  <rect x="232" y="232" width="48" height="48" fill="#0B6E5A"/>
-  <!-- locked node (top) -->
-  <rect x="234" y="114" width="44" height="44" fill="none" stroke="#3D4A45" stroke-width="4"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Sirat — the straight path rising to the light of guidance -->
+  <rect width="512" height="512" fill="#0C1A15"/>
+  <!-- the gold path (centred, rising) -->
+  <polyline points="180,392 256,268 332,144" fill="none" stroke="#E4BC7C"
+            stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- start waypoint (growth / this world) -->
+  <circle cx="180" cy="392" r="22" fill="#57A88E"/>
+  <!-- middle waypoint -->
+  <circle cx="256" cy="268" r="15" fill="#0C1A15"/>
+  <circle cx="256" cy="268" r="15" fill="none" stroke="#E4BC7C" stroke-width="7"/>
+  <!-- beacon of guidance -->
+  <circle cx="332" cy="144" r="33" fill="#E4BC7C"/>
+  <circle cx="332" cy="144" r="49" fill="none" stroke="#E4BC7C" stroke-width="5" opacity="0.55"/>
 </svg>

@@ -8,8 +8,17 @@
  *  - Other same-origin GETs (JS/CSS/images): stale-while-revalidate.
  */
 
-const CACHE = "sirat-v2";
-const SHELL = ["/", "/index.html", "/manifest.webmanifest", "/icon.svg", "/icon-maskable.svg"];
+const CACHE = "sirat-v3";
+const SHELL = [
+  "/",
+  "/index.html",
+  "/manifest.webmanifest",
+  "/icon.svg",
+  "/icon-192.png",
+  "/icon-512.png",
+  "/icon-maskable-512.png",
+  "/apple-touch-icon.png",
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
