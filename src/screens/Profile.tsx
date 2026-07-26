@@ -77,6 +77,7 @@ export default function Profile({ completed, total, onRefresh, onSignOut }: Prof
       >
         Refresh progress
       </button>
+
     </div>
   );
 }

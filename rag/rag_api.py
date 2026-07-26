@@ -44,16 +44,13 @@ class Settings:
         # NOTE: upstream hardcoded a leaked Gemini key here — removed for safety.
         self.gemini_api_key = os.environ.get("GEMINI_API_KEY", "")
         self.groq_api_key = os.environ.get("GROQ_API_KEY", "")
-        # 8b-instant has a much higher free-tier daily token limit than 70b, so
-        # the Ask section stays available. Override with GROQ_MODEL if desired.
-        self.groq_model = os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
+        self.groq_model = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 
         # Embedding model
         self.embedding_model = "all-MiniLM-L6-v2";
 
         # Default parameters
-        # Fewer chunks per query → smaller prompts → far fewer tokens/day used.
-        self.default_top_k = 7
+        self.default_top_k = 10
         self.default_relevance_threshold = 0.6
 
         # CORS settings - Frontend ke liye
@@ -425,47 +422,9 @@ def generate_alternatives(query):
 # [Rest of the functions remain the same as in your original file...]
 # I'll include the key functions needed for the API to work
 
-# Shown for questions we won't answer (invalid / off-topic / abusive).
-REFUSAL_MESSAGE = (
-    "That doesn't look like a genuine question I can answer from the Qur'an and "
-    "Hadith. Please ask a clear, complete question about Islam — for example about "
-    "worship, character, the Qur'an, or the life of the Prophet ﷺ."
-)
-
-_ABUSE_WORDS = {
-    "fuck", "fucking", "shit", "bitch", "bastard", "asshole", "dick",
-    "cunt", "slut", "whore", "nigger", "faggot", "retard",
-}
-
-
-def is_valid_query(query: str) -> bool:
-    """Cheap pre-filter for empty, too-short, letterless, or abusive input —
-    rejected before any LLM cost. Subtler cases (jokes, off-topic) are caught by
-    the REFUSE guard in the prompt."""
-    s = (query or "").strip()
-    if len(s) < 5:
-        return False
-    if sum(c.isalpha() for c in s) < 3:
-        return False
-    if set(re.findall(r"[a-zA-Z']+", s.lower())) & _ABUSE_WORDS:
-        return False
-    return True
-
-
 async def process_islamic_query(query: str, source_type: str = "auto", top_k: int = 10):
     """Process an Islamic query and generate a response with references."""
     start_time = time.time()
-
-    # Guard: refuse invalid/abusive input up front (no retrieval, no LLM cost).
-    if not is_valid_query(query):
-        return {
-            "query": query,
-            "answer": REFUSAL_MESSAGE,
-            "source_type": "none",
-            "processing_time": time.time() - start_time,
-            "references_count": 0,
-            "alternatives_used": None,
-        }
 
     # If source_type is auto, detect it from the query
     if source_type == "auto":
@@ -495,37 +454,9 @@ async def process_islamic_query(query: str, source_type: str = "auto", top_k: in
         if used_alternatives:
             raw_results = best_results
 
-    # Separate results by source. Clip each chunk so a single long hadith can't
-    # blow up the prompt (keeps tokens/query low). This only shortens what the LLM
-    # sees for this query — the stored index/data is untouched.
-    def _clip(text, limit=550):
-        t = (text or "").strip()
-        if len(t) <= limit:
-            return t
-        return t[:limit].rsplit(" ", 1)[0] + "…"
-
-    # Map the source's original file-path label to a proper collection name so
-    # references read cleanly ("Sunan Ibn Majah, Hadith 3662") instead of leaking
-    # "E:\...\AHADEES\eng-ibnmajah". Only the label is rewritten — the narration
-    # text and the stored data are untouched.
-    _HADITH_BOOKS = {
-        "eng_bukhari": "Sahih Bukhari",
-        "eng_muslim": "Sahih Muslim",
-        "eng-ibnmajah": "Sunan Ibn Majah",
-        "eng-tirmidhi": "Jami' at-Tirmidhi",
-        "eng-nasai": "Sunan an-Nasa'i",
-        "eng_dawood": "Sunan Abi Dawud",
-    }
-
-    def _clean_source(text):
-        return re.sub(
-            r"[A-Za-z]:[\\/].*?AHADEES[\\/]([A-Za-z_\-]+)",
-            lambda m: _HADITH_BOOKS.get(m.group(1), m.group(1)),
-            text or "",
-        )
-
-    quran_texts = [_clip(r["text"]) for r in raw_results if r.get("source") == "quran"]
-    hadith_texts = [_clip(_clean_source(r["text"])) for r in raw_results if r.get("source") == "hadith"]
+    # Separate results by source for presentation
+    quran_texts = [r["text"] for r in raw_results if r.get("source") == "quran"]
+    hadith_texts = [r["text"] for r in raw_results if r.get("source") == "hadith"]
 
     # Build context based on what we found
     context = ""
@@ -534,58 +465,41 @@ async def process_islamic_query(query: str, source_type: str = "auto", top_k: in
     if hadith_texts:
         context += "HADITH REFERENCES:\n" + "\n\n".join(hadith_texts)
 
-    # Shown when the LLM is unavailable (e.g. the daily token limit is reached).
-    # We deliberately do NOT dump raw context — it reads as noise.
-    UNAVAILABLE = (
-        "The knowledge assistant is temporarily unavailable — the daily AI limit may "
-        "have been reached. Please try again in a little while. For anything urgent, "
-        "please consult a trusted local scholar or a reliable source such as "
-        "quran.com or sunnah.com."
-    )
-
-    generated = False
+    # Generate response using the configured LLM, or fall back to raw context
     if llm_ready():
-        prompt = f"""You are a knowledgeable, humble Islamic assistant. Answer using ONLY the provided sources.
-
-First, judge the question. If it is NOT a genuine, answerable question about Islam — e.g. a joke, nonsense, an incomplete sentence, abusive/offensive, or unrelated to Islam — reply with EXACTLY the single word:
-REFUSE
-(and nothing else).
-
-Otherwise, answer it. Format the whole answer in **Markdown**:
-- Be concise: 2–4 short paragraphs (do not pad the length).
-- Cite ONLY the references directly relevant to the question, inline, as "Surah [Name], Ayah [Number]" or "[Collection], Hadith [Number]". Ignore irrelevant sources.
-- If the sources do not really address the question, say so briefly rather than forcing a connection.
-- Do not issue rulings; where a personal ruling is needed, advise asking a qualified scholar.
-- End with a section titled `## References` listing each source you actually used, one per bullet. Cite Hadith by collection name and number only (e.g. "Sahih Bukhari, Hadith 5972") — never include file paths.
-
-Islamic sources:
-{context}
-
-Question: {query}
-
-Answer:"""
+        prompt = f"""
+        You are a knowledgeable Islamic assistant. Answer the following question based on the provided Islamic sources.
+        
+        Always include proper references in your answer:
+        - For Quran: "Surah [Name], Ayah [Number]"
+        - For Hadith: "[Book Name], Hadith [Number]"
+        
+        Islamic Context:
+        {context}
+        
+        Question: {query}
+        
+        Answer:
+        """
+        
         try:
-            out = llm_generate(prompt)
-            if out.strip().upper().startswith("REFUSE"):
-                response = REFUSAL_MESSAGE  # LLM judged it invalid/off-topic
-            else:
-                response = out
-                generated = True
+            response = llm_generate(prompt)
         except Exception as e:
             logger.error(f"Error generating response: {e}")
-            response = UNAVAILABLE
+            response = f"Based on Islamic sources, here's what I found regarding your question about '{query}':\n\n{context}"
     else:
-        response = UNAVAILABLE
+        # Fallback response when Gemini is not available
+        response = f"Based on Islamic sources, here's what I found regarding your question about '{query}':\n\n{context}"
 
-    # Only annotate a real answer.
-    if generated and used_alternatives:
+    # Include alternative note if alternatives were used
+    if used_alternatives:
         response = f"Note: I searched for related concepts: {', '.join(used_alternatives)}.\n\n{response}"
 
     end_time = time.time()
     processing_time = end_time - start_time
 
-    # Count references only in a real answer.
-    references_count = (response.count("Surah") + response.count("Hadith")) if generated else 0
+    # Count references in the response
+    references_count = response.count("Surah") + response.count("Hadith")
 
     return {
         "query": query,

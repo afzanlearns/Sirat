@@ -1,0 +1,235 @@
+[
+  {
+    "id": "how-to-make-wudu",
+    "title": "How to Make Wudu (Ablution)",
+    "category": "Purification",
+    "steps": [
+      "Make a silent intention (Niyyah) in your heart to purify yourself for worship.",
+      "Say 'Bismillah' (In the name of Allah).",
+      "Wash your hands up to the wrists three times, making sure water runs between your fingers.",
+      "Rinse your mouth thoroughly three times, swirling the water inside.",
+      "Inhale water gently into your nostrils and blow it out three times using your left hand to clean the nose.",
+      "Wash your entire face three times, from the hairline to the chin, and from ear to ear.",
+      "Wash your right arm up to and including the elbow three times, then do the same for your left arm.",
+      "Wipe your wet hands over your head once: start at the front, move to the back, and return to the front. Then use your index fingers and thumbs to wipe the inside and outside of your ears.",
+      "Wash your right foot up to the ankle three times, cleaning between the toes, then do the same for your left foot."
+    ],
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah Al-Ma'idah 5:6",
+        "summary": "Commands believers to wash their faces, arms up to the elbows, wipe their heads, and wash their feet to the ankles before standing for prayer.",
+        "url": "https://quran.com/5/6"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 159",
+        "grading": "Sahih",
+        "summary": "Uthman ibn Affan demonstrated wudu exactly as the Prophet performed it, detailing washing hands, mouth, nose, face, arms, head wipe, and feet.",
+        "url": "https://sunnah.com/bukhari:159"
+      }
+    ]
+  },
+  {
+    "id": "what-breaks-wudu",
+    "title": "What Breaks Wudu",
+    "category": "Purification",
+    "steps": [
+      "Passing anything from the front or back passages (urine, feces, or wind).",
+      "Deep sleep where one loses consciousness and control over their posture.",
+      "Loss of sanity, consciousness, or severe intoxication due to any reason.",
+      "Direct physical contact of the hands with the private parts without any barrier.",
+      "Emission of prostatic fluid (madhiy) or semen (mani) - note that semen emission requires Ghusl (full bath), not just wudu."
+    ],
+    "evidence": [
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 135",
+        "grading": "Sahih",
+        "summary": "The Prophet stated that Allah does not accept the prayer of a person who has released gas or impurities until they perform wudu.",
+        "url": "https://sunnah.com/bukhari:135"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih Muslim 362",
+        "grading": "Sahih",
+        "summary": "Ali ibn Abi Talib narrated that for emission of prostatic fluid (madhiy), the Prophet instructed to wash the private parts and perform wudu.",
+        "url": "https://sunnah.com/muslim:362"
+      }
+    ]
+  },
+  {
+    "id": "how-to-make-tayammum",
+    "title": "How to Make Tayammum (Dry Ablution)",
+    "category": "Purification",
+    "steps": [
+      "Formulate the intention in your heart to purify yourself for prayer.",
+      "Say 'Bismillah' (In the name of Allah).",
+      "Strike clean earth, clay, sand, or stone once with the palms of both hands.",
+      "Blow off any excess dust from your hands.",
+      "Wipe the palms of your hands over your entire face once.",
+      "Wipe the back of your right hand with your left palm, and then wipe the back of your left hand with your right palm."
+    ],
+    "evidence": [
+      {
+        "type": "quran",
+        "reference": "Surah An-Nisa 4:43",
+        "summary": "Provides concession for dry ablution using clean earth when water is unavailable, or when one is ill or traveling.",
+        "url": "https://quran.com/4/43"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 338",
+        "grading": "Sahih",
+        "summary": "Ammar ibn Yasir narrated that the Prophet demonstrated Tayammum by striking the earth once, blowing off the dust, and wiping his face and hands.",
+        "url": "https://sunnah.com/bukhari:338"
+      }
+    ]
+  },
+  {
+    "id": "masjid-entering-etiquette",
+    "title": "Masjid Entering Etiquette",
+    "category": "Masjid Etiquette",
+    "steps": [
+      "Remove your shoes before entering the prayer hall, placing them neatly in the shoe racks.",
+      "Step into the masjid with your right foot first.",
+      "Say the sunnah du'a for entering the masjid: 'Allahummaf-tah li abwaba rahmatik' (O Allah, open for me the gates of Your mercy).",
+      "Perform two units of prayer (Tahiyyat al-Masjid) to greet the mosque before sitting down.",
+      "Maintain a quiet and peaceful demeanor, avoiding loud conversations, business transactions, or raising voices."
+    ],
+    "evidence": [
+      {
+        "type": "hadith",
+        "reference": "Sahih Muslim 713",
+        "grading": "Sahih",
+        "summary": "The Prophet instructed: 'When one of you enters the mosque, he should pray two rak'ahs before sitting down.'",
+        "url": "https://sunnah.com/muslim:713"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 479",
+        "grading": "Sahih",
+        "summary": "The Prophet encouraged praying two rak'ahs upon entering the masjid as a form of respect for the place of worship.",
+        "url": "https://sunnah.com/bukhari:479"
+      }
+    ]
+  },
+  {
+    "id": "how-to-pray-salah",
+    "title": "How to Pray (Action Sequences)",
+    "category": "Prayer Basics",
+    "steps": [
+      "Stand straight facing the Qiblah (direction of the Ka'bah) and make the intention in your heart for the specific prayer.",
+      "Raise your hands to your ears/shoulders and say 'Allahu Akbar' to enter the state of prayer (Takbirat al-Ihram). Keep your gaze on the spot of prostration.",
+      "Place your right hand over your left hand on your chest, and recite the opening supplication, Surah Al-Fatihah, and another short portion of the Qur'an.",
+      "Say 'Allahu Akbar' and bow down (Ruku) with a straight back, placing hands on knees, and glorify Allah: 'Subhana Rabbiyal-Azeem' (Glory is to my Lord the Magnificent) three times.",
+      "Stand back up straight saying 'Sami'Allahu liman hamidah' (Allah hears whoever praises Him) followed by 'Rabbana wa lakal-hamd' (Our Lord, to You is all praise).",
+      "Go down into prostration (Sujud) on seven bones (forehead/nose, two hands, two knees, and two feet toes) and say 'Subhana Rabbiyal-A'la' (Glory is to my Lord the Most High) three times.",
+      "Sit up straight on your left leg with the right foot upright, and say 'Rabbigh-fir li' (My Lord, forgive me). Prostrate again in the same manner.",
+      "Stand up straight to begin the next unit (Rakah). In the final unit, sit for the Tashahhud (testimony of faith) and send blessings upon the Prophet.",
+      "Conclude the prayer by turning your face to the right saying 'As-salamu alaykum wa rahmatullah', then turn to the left saying the same."
+    ],
+    "evidence": [
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 631",
+        "grading": "Sahih",
+        "summary": "The Prophet instructed his companions: 'Pray exactly as you have seen me praying.'",
+        "url": "https://sunnah.com/bukhari:631"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 757",
+        "grading": "Sahih",
+        "summary": "The Prophet corrected a man who prayed quickly, detailing the obligation of maintaining calmness and stillness in standing, bowing, and prostrating.",
+        "url": "https://sunnah.com/bukhari:757"
+      }
+    ]
+  },
+  {
+    "id": "basics-of-entering-prayer",
+    "title": "Basics of Entering Prayer",
+    "category": "Prayer Basics",
+    "steps": [
+      "Ensure your body, clothes, and place of prayer are clean, and you have performed wudu.",
+      "Stand upright facing the Qiblah (direction of Mecca).",
+      "Formulate the intention (Niyyah) in your heart for the specific prayer you are about to perform.",
+      "Raise both hands with palms facing forward, level with your earlobes or shoulders.",
+      "Say 'Allahu Akbar' (Allah is the Greatest) in a clear voice. This Takbirat al-Ihram begins the sacred state of prayer."
+    ],
+    "evidence": [
+      {
+        "type": "hadith",
+        "reference": "Sahih Muslim 390",
+        "grading": "Sahih",
+        "summary": "The Prophet said: 'The key to prayer is purification, its opening is the Takbir (saying Allahu Akbar), and its conclusion is the Taslim.'",
+        "url": "https://sunnah.com/muslim:390"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 789",
+        "grading": "Sahih",
+        "summary": "Narrates that when the Prophet stood for prayer, he raised his hands until they were level with his shoulders, then said 'Allahu Akbar'.",
+        "url": "https://sunnah.com/bukhari:789"
+      }
+    ]
+  },
+  {
+    "id": "ruku-and-sujud",
+    "title": "The Ruku and Sujud",
+    "category": "Prayer Basics",
+    "steps": [
+      "From standing, say 'Allahu Akbar' and bend at the waist to perform Ruku (bowing).",
+      "Keep your back flat and horizontal, head level with your spine, and place your hands firmly on your knees with fingers spread.",
+      "Glorify Allah in Ruku three times: 'Subhana Rabbiyal-Azeem'.",
+      "Go down into Sujud (prostration) by placing your knees on the floor first, followed by your hands, then your nose and forehead.",
+      "Ensure all seven body parts touch the floor firmly: forehead and nose, palms of both hands, both knees, and the pads of the toes of both feet.",
+      "Keep your elbows raised away from the floor and your stomach away from your thighs.",
+      "Glorify Allah in Sujud three times: 'Subhana Rabbiyal-A'la' and supplicate sincerely."
+    ],
+    "evidence": [
+      {
+        "type": "hadith",
+        "reference": "Sahih al-Bukhari 812",
+        "grading": "Sahih",
+        "summary": "The Prophet said: 'I have been commanded to prostrate on seven bones: the forehead (and he pointed to his nose), both hands, both knees, and the toes of both feet.'",
+        "url": "https://sunnah.com/bukhari:812"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih Muslim 491",
+        "grading": "Sahih",
+        "summary": "The Prophet said: 'As for Ruku, glorify the Lord therein. As for Sujud, strive hard in supplication, for it is highly likely that your prayers will be answered.'",
+        "url": "https://sunnah.com/muslim:491"
+      }
+    ]
+  },
+  {
+    "id": "ending-the-prayer",
+    "title": "Ending the Prayer",
+    "category": "Prayer Basics",
+    "steps": [
+      "After completing the final prostrations of the last unit (Rakah), sit in the Tashahhud position.",
+      "Rest your left hand flat on your left thigh, and close your right hand's fingers, pointing your index finger forward to declare faith.",
+      "Recite the Tashahhud, followed by the Ibrahimic blessings (Salawat) and any sunnah supplications.",
+      "Turn your head slowly to the right, looking at your shoulder, and say: 'As-salamu alaykum wa rahmatullah' (Peace and mercy of Allah be upon you).",
+      "Turn your head slowly to the left, looking at your shoulder, and say the same: 'As-salamu alaykum wa rahmatullah'."
+    ],
+    "evidence": [
+      {
+        "type": "hadith",
+        "reference": "Sahih Muslim 582",
+        "grading": "Sahih",
+        "summary": "Sa'd narrated: 'I used to see the Messenger of Allah performing Taslim to his right and left until the whiteness of his cheek could be seen.'",
+        "url": "https://sunnah.com/muslim:582"
+      },
+      {
+        "type": "hadith",
+        "reference": "Sahih Muslim 390",
+        "grading": "Sahih",
+        "summary": "The Prophet stated that the ending and conclusion of the prayer is the Taslim (the salutation of peace).",
+        "url": "https://sunnah.com/muslim:390"
+      }
+    ]
+  }
+]

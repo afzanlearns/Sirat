@@ -36,6 +36,7 @@ export default function PrayerTimes({ onBack, onFindMasjid }: PrayerTimesProps) 
   const [data, setData] = useState<PrayerTimesData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [isFallback, setIsFallback] = useState(false);
 
   const initial = getStoredLocation();
   const [editing, setEditing] = useState(false);
@@ -44,26 +45,58 @@ export default function PrayerTimes({ onBack, onFindMasjid }: PrayerTimesProps) 
 
   const next = useNextPrayer(data);
 
-  const load = useCallback(async (c: string, ctry: string) => {
+  const load = useCallback(async (c?: string, ctry?: string, lat?: number | null, lng?: number | null) => {
     setLoading(true);
     setError(false);
-    const d = await fetchPrayerTimes(c, ctry);
+    const d = await fetchPrayerTimes(c, ctry, lat, lng);
     if (d) setData(d);
     else setError(true);
     setLoading(false);
   }, []);
 
   useEffect(() => {
-    load(initial.city, initial.country);
+    const storedCity = localStorage.getItem("sirat_city");
+    const storedLat = localStorage.getItem("sirat_lat");
+
+    if (!storedCity && !storedLat) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            storeLocation("Detected Location", "", latitude, longitude);
+            setCity("Detected Location");
+            setCountry("");
+            setIsFallback(false);
+            load(undefined, undefined, latitude, longitude);
+          },
+          (err) => {
+            console.warn("Geolocation failed or denied, using Mumbai default:", err);
+            setIsFallback(true);
+            load(initial.city, initial.country, initial.latitude, initial.longitude);
+          },
+          { timeout: 10000 }
+        );
+      } else {
+        setIsFallback(true);
+        load(initial.city, initial.country, initial.latitude, initial.longitude);
+      }
+    } else {
+      if (initial.latitude !== null && initial.longitude !== null) {
+        load(undefined, undefined, initial.latitude, initial.longitude);
+      } else {
+        load(initial.city, initial.country);
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const saveLocation = (e: React.FormEvent) => {
     e.preventDefault();
     if (!city.trim() || !country.trim()) return;
-    storeLocation(city.trim(), country.trim());
+    storeLocation(city.trim(), country.trim(), null, null);
+    setIsFallback(false);
     setEditing(false);
-    load(city.trim(), country.trim());
+    load(city.trim(), country.trim(), null, null);
   };
 
   return (
@@ -159,23 +192,30 @@ export default function PrayerTimes({ onBack, onFindMasjid }: PrayerTimesProps) 
               </div>
             </form>
           ) : (
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                <span style={{ fontSize: "18px", fontWeight: "bold", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-                  {data ? `${data.city}, ${data.country}` : `${initial.city}, ${initial.country}`}
-                </span>
-                {data && (
-                  <span style={{ fontSize: "11px", color: "var(--text-muted)", letterSpacing: "0.05em" }}>
-                    {data.gregorianDate} · {data.hijriDate} AH
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <span style={{ fontSize: "18px", fontWeight: "bold", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+                    {data ? (data.country ? `${data.city}, ${data.country}` : data.city) : `${initial.city}, ${initial.country}`}
                   </span>
-                )}
+                  {data && (
+                    <span style={{ fontSize: "11px", color: "var(--text-muted)", letterSpacing: "0.05em" }}>
+                      {data.gregorianDate} · {data.hijriDate} AH
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={() => setEditing(true)}
+                  style={{ ...LABEL_STYLE, color: "var(--secondary)" }}
+                >
+                  CHANGE
+                </button>
               </div>
-              <button
-                onClick={() => setEditing(true)}
-                style={{ ...LABEL_STYLE, color: "var(--secondary)" }}
-              >
-                CHANGE
-              </button>
+              {isFallback && (
+                <span style={{ fontSize: "12px", color: "var(--secondary)", letterSpacing: "0.02em" }}>
+                  ⚠️ Showing times for Mumbai (Default) — set your location or allow geolocation
+                </span>
+              )}
             </div>
           )}
         </div>
